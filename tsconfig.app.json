@@ -25,7 +25,7 @@
 
     /* Types */
     "typeRoots": ["./node_modules/@types", "./node_modules/@penpot"],
-    "types": ["plugin-types"],
+    "types": ["plugin-types"]
   },
   "include": ["src"]
 }

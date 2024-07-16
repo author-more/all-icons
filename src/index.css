@@ -1,10 +1,12 @@
+@import "./normalize.css";
 @import "@penpot/plugin-styles/styles.css";
 
 :root {
   color-scheme: light dark;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+#root {
+  isolation: isolate;
 }

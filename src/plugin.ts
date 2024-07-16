@@ -7,7 +7,7 @@ type ThemePluginEvent = {
   content: PenpotTheme;
 };
 
-penpot.ui.open("Plugin name", `?theme=${penpot.getTheme()}`, {
+penpot.ui.open("All Icons", `?theme=${penpot.getTheme()}`, {
   width: 500,
   height: 600,
 });

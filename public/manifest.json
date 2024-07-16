@@ -1,13 +1,7 @@
 {
-  "name": "Plugin name",
-  "description": "Plugin description",
+  "name": "All Icons",
+  "description": "An icon library",
   "code": "/plugin.js",
   "icon": "/icon.png",
-  "permissions": [
-    "content:read",
-    "content:write",
-    "library:read",
-    "library:write",
-    "user:read"
-  ]
+  "permissions": ["content:write"]
 }

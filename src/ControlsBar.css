@@ -1,0 +1,14 @@
+.controls-bar {
+  position: sticky;
+  top: 0;
+
+  padding: 8px 0;
+}
+
+[data-theme="dark"] .controls-bar {
+  background-color: var(--db-primary);
+}
+
+[data-theme="light"] .controls-bar {
+  background-color: var(--lb-primary);
+}

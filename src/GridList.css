@@ -1,0 +1,13 @@
+.grid-list {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+
+  gap: 0.75rem;
+}
+
+.grid-list-empty {
+  text-align: center;
+  word-break: break-word;
+
+  padding: 1rem;
+}

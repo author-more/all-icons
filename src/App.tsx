@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { PluginMessageEvent } from "./plugin";
+import { icons } from "lucide-react";
+import IconButton from "./IconButton";
+import { renderToHtml } from "./dom";
 
 function App() {
   const url = new URL(window.location.href);
@@ -22,7 +25,32 @@ function App() {
     };
   }, []);
 
-  return <div data-theme={theme}>Welcome to your plugin!</div>;
+  const iconList = Object.entries(icons).map(([name, Icon]) => {
+    return (
+      <IconButton
+        label={`Insert icon: ${name}`}
+        onClick={() => handleIconButtonClick(name, renderToHtml(Icon))}
+      >
+        <Icon />
+      </IconButton>
+    );
+  });
+
+  function handleIconButtonClick(name: string, svg: string) {
+    window.parent.postMessage(
+      {
+        type: "insert-icon",
+        content: { name, svg },
+      },
+      "*",
+    );
+  }
+
+  return (
+    <div data-theme={theme}>
+      <div className="icon-list">{iconList}</div>
+    </div>
+  );
 }
 
 export default App;

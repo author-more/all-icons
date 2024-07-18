@@ -3,5 +3,5 @@
   "description": "An icon library",
   "code": "/plugin.js",
   "icon": "/icon.png",
-  "permissions": ["content:write"]
+  "permissions": ["content:write", "library:read"]
 }

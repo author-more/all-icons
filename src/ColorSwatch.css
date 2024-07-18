@@ -1,0 +1,17 @@
+.color-swatch {
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid transparent;
+  border-radius: 50%;
+
+  background: var(--color-swatch-background);
+}
+
+[data-theme="dark"] .color-swatch {
+  border-color: var(--db-quaternary);
+}
+
+[data-theme="light"] .color-swatch {
+  border-color: var(--lb-quaternary);
+}

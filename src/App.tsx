@@ -7,6 +7,8 @@ import { renderToHtml } from "./dom";
 import SearchInput from "./SearchInput";
 import GridList from "./GridList";
 import ControlsBar from "./ControlsBar";
+import { PenpotLibraryColor } from "@penpot/plugin-types";
+import ColorSwatch from "./ColorSwatch";
 
 function App() {
   const url = new URL(window.location.href);
@@ -14,16 +16,27 @@ function App() {
 
   const [theme, setTheme] = useState(initialTheme || null);
   const [searchPhrase, setSearchPhrase] = useState("");
+  const [libraryColors, setLibraryColors] = useState<PenpotLibraryColor[]>([]);
+  const [selectedIconColorId, setSelectedIconColorId] = useState<
+    PenpotLibraryColor["id"] | null
+  >(null);
 
   useEffect(() => {
-    const handleMessage = (event: MessageEvent<PluginMessageEvent>) => {
-      if (event.data.type === "theme") {
-        setTheme(event.data.content);
+    const handleMessage = ({
+      data: { type, content },
+    }: MessageEvent<PluginMessageEvent>) => {
+      if (type === "theme") {
+        setTheme(content);
+      }
+
+      if (type === "library-colors") {
+        setLibraryColors(content);
       }
     };
 
     window.addEventListener("message", handleMessage);
 
+    window.parent.postMessage({ type: "get-library-colors" }, "*");
     return () => {
       window.removeEventListener("message", handleMessage);
     };
@@ -48,7 +61,11 @@ function App() {
     window.parent.postMessage(
       {
         type: "insert-icon",
-        content: { name, svg },
+        content: {
+          name,
+          svg,
+          colorId: selectedIconColorId,
+        },
       },
       "*",
     );
@@ -61,6 +78,16 @@ function App() {
           label="Search icon"
           placeholder="e.g. arrow"
           onChange={setSearchPhrase}
+        />
+        <GridList
+          items={libraryColors.map((color) => (
+            <IconButton
+              label={`Set default color to: ${color.name}`}
+              onClick={() => setSelectedIconColorId(color.id)}
+            >
+              <ColorSwatch color={color} />
+            </IconButton>
+          ))}
         />
       </ControlsBar>
       <GridList

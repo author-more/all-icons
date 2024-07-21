@@ -5,15 +5,20 @@ import { hexToRgba } from "./color";
 
 type ColorSwatchProps = {
   color: PenpotLibraryColor;
+  size?: number;
 };
 
-export default function ColorSwatch({ color: penpotColor }: ColorSwatchProps) {
+export default function ColorSwatch({
+  color: penpotColor,
+  size,
+}: ColorSwatchProps) {
   return (
     <div
       key={penpotColor.id}
       className="color-swatch"
       style={
         {
+          "--color-swatch-size": `${size}px`,
           "--color-swatch-background": getBackground(penpotColor),
         } as React.CSSProperties
       }

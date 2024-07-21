@@ -2,6 +2,10 @@
   position: sticky;
   top: 0;
 
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+
   padding: 8px 0;
 }
 

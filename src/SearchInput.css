@@ -1,3 +1,7 @@
+.form-search {
+  flex-grow: 1;
+}
+
 .form-search input {
   width: 100%;
 }

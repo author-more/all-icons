@@ -1,6 +1,6 @@
 .color-swatch {
-  width: 16px;
-  height: 16px;
+  width: var(--color-swatch-size, 16px);
+  height: var(--color-swatch-size, 16px);
 
   border: 2px solid transparent;
   border-radius: 50%;

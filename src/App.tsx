@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { PluginMessageEvent } from "./plugin";
-import { icons } from "lucide-react";
+import { icons, Palette } from "lucide-react";
 import IconButton from "./IconButton";
 import { renderToHtml } from "./dom";
 import SearchInput from "./SearchInput";
@@ -20,6 +20,7 @@ function App() {
   const [selectedIconColorId, setSelectedIconColorId] = useState<
     PenpotLibraryColor["id"] | null
   >(null);
+  const [isColorSelectorOpen, setIsColorSelectorOpen] = useState(false);
 
   useEffect(() => {
     const handleMessage = ({
@@ -36,7 +37,7 @@ function App() {
 
     window.addEventListener("message", handleMessage);
 
-    window.parent.postMessage({ type: "get-library-colors" }, "*");
+    requestLibraryColors();
     return () => {
       window.removeEventListener("message", handleMessage);
     };
@@ -71,6 +72,22 @@ function App() {
     );
   }
 
+  function toggleColorSelector() {
+    if (!isColorSelectorOpen) {
+      requestLibraryColors();
+    }
+
+    setIsColorSelectorOpen(!isColorSelectorOpen);
+  }
+
+  function requestLibraryColors() {
+    window.parent.postMessage({ type: "get-library-colors" }, "*");
+  }
+
+  const selectedIconColor =
+    selectedIconColorId &&
+    libraryColors.find(({ id }) => id === selectedIconColorId);
+
   return (
     <div className="app" data-theme={theme}>
       <ControlsBar>
@@ -79,6 +96,23 @@ function App() {
           placeholder="e.g. arrow"
           onChange={setSearchPhrase}
         />
+        <IconButton
+          label={
+            isColorSelectorOpen ? "Close color selector" : "Open color selector"
+          }
+          onClick={toggleColorSelector}
+        >
+          <div className="icon-holder">
+            <Palette size={20} />
+            {selectedIconColor && (
+              <div className="color-swatch-preview">
+                <ColorSwatch color={selectedIconColor} size={12} />
+              </div>
+            )}
+          </div>
+        </IconButton>
+      </ControlsBar>
+      {isColorSelectorOpen && (
         <GridList
           items={libraryColors.map((color) => (
             <IconButton
@@ -89,7 +123,7 @@ function App() {
             </IconButton>
           ))}
         />
-      </ControlsBar>
+      )}
       <GridList
         items={iconList}
         emptyMessage={`No icons found for "${searchPhrase}"`}

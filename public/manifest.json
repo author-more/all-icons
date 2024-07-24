@@ -1,6 +1,6 @@
 {
   "name": "All Icons",
-  "description": "An icon library",
+  "description": "Quickly access a range of icon libraries",
   "code": "/plugin.js",
   "icon": "/icon.png",
   "permissions": ["content:write"]

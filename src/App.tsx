@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { PluginMessageEvent } from "./plugin";
-import { icons } from "lucide-react";
 import IconButton from "./IconButton";
-import { renderToHtml } from "./dom";
+import Icon from "./Icon";
 import SearchInput from "./SearchInput";
 import GridList from "./GridList";
 import ControlsBar from "./ControlsBar";
+
+import lucideIcons from "../data/icons/lucide.json";
 
 function App() {
   const url = new URL(window.location.href);
@@ -29,20 +30,30 @@ function App() {
     };
   }, []);
 
-  const iconList = Object.entries(icons)
+  const iconList = Object.entries(lucideIcons)
     .filter(([name]) => {
       return name.toLowerCase().includes(searchPhrase.toLowerCase());
     })
-    .map(([name, Icon]) => {
-      return (
-        <IconButton
-          label={`Insert icon: ${name}`}
-          onClick={() => handleIconButtonClick(name, renderToHtml(Icon))}
-        >
-          <Icon />
-        </IconButton>
-      );
-    });
+    .map(
+      ([
+        name,
+        {
+          svg: { attributes, elements },
+        },
+      ]) => {
+        const svg = `<svg ${attributes}>${elements}</svg>`;
+        const icon = <Icon attributes={attributes} elements={elements} />;
+
+        return (
+          <IconButton
+            label={`Insert icon: ${name}`}
+            onClick={() => handleIconButtonClick(name, svg)}
+          >
+            {icon}
+          </IconButton>
+        );
+      },
+    );
 
   function handleIconButtonClick(name: string, svg: string) {
     window.parent.postMessage(

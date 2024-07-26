@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Plugin data
+/data/icons/*
+!/data/icons/.gitkeep

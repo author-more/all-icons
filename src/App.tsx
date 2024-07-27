@@ -6,8 +6,8 @@ import Icon from "./Icon";
 import SearchInput from "./SearchInput";
 import GridList from "./GridList";
 import ControlsBar from "./ControlsBar";
-
-import { Icons, icons } from "./icons";
+import { Icons, icons, defaultIconSetSettings } from "./icons";
+import Select from "./Select";
 
 function App() {
   const url = new URL(window.location.href);
@@ -15,6 +15,10 @@ function App() {
 
   const [theme, setTheme] = useState(initialTheme || null);
   const [searchPhrase, setSearchPhrase] = useState("");
+
+  const [iconSetsSettings, setIconSetsSettings] = useState(
+    defaultIconSetSettings,
+  );
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent<PluginMessageEvent>) => {
@@ -30,19 +34,20 @@ function App() {
     };
   }, []);
 
-  const iconLists = icons.flatMap(({ name, icons }) => {
-    if (Array.isArray(icons)) {
-      return icons.map(({ variant, icons }) => {
-        return {
-          name: `${name} (${variant})`,
-          icons: getIconList(icons),
-        };
-      });
-    }
+  const iconLists = icons.map(({ id, name, icons }) => {
+    const selectedVariant = iconSetsSettings[id].selectedVariant;
+    const iconsByVariant =
+      icons.find(({ variant }) => variant === selectedVariant)?.icons || {};
+    const variantOptions = icons.map(({ variant }) => ({
+      label: variant,
+      value: variant,
+    }));
 
     return {
-      name,
-      icons: getIconList(icons),
+      id,
+      title: name,
+      variantOptions,
+      icons: getIconList(iconsByVariant),
     };
   });
 
@@ -83,10 +88,21 @@ function App() {
     );
   }
 
-  const iconGrids = iconLists.map(({ name, icons }) => {
+  const iconGrids = iconLists.map(({ id, title, variantOptions, icons }) => {
+    const hasMultipleVariants = variantOptions.length > 1;
+
     return (
       <>
-        <p className="title-m">{name}</p>
+        <h2>{title}</h2>
+        {hasMultipleVariants && (
+          <Select
+            label="Variant"
+            options={variantOptions}
+            onChange={(event) =>
+              updateSettings(id, { selectedVariant: event.target.value })
+            }
+          />
+        )}
         <GridList
           items={icons}
           emptyMessage={`No icons found for "${searchPhrase}"`}
@@ -94,6 +110,19 @@ function App() {
       </>
     );
   });
+
+  function updateSettings(
+    id: string,
+    settings: (typeof defaultIconSetSettings)[keyof typeof defaultIconSetSettings],
+  ) {
+    setIconSetsSettings((currentSettings) => ({
+      ...currentSettings,
+      [id]: {
+        ...currentSettings[id],
+        ...settings,
+      },
+    }));
+  }
 
   return (
     <div className="app" data-theme={theme}>

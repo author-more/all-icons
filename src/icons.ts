@@ -5,7 +5,7 @@ import iconsIconoirSolid from "../data/icons/iconoir-solid.json";
 export type IconSet = {
   id: string;
   name: string;
-  icons: Icons | IconSetVariants[];
+  icons: IconSetVariants[];
 };
 
 type IconSetVariants = {
@@ -22,11 +22,18 @@ type Icon = {
   };
 };
 
+type IconSetSettings = { selectedVariant: string };
+
 export const icons: IconSet[] = [
   {
     id: "lucide",
     name: "Lucide",
-    icons: iconsLucide,
+    icons: [
+      {
+        variant: "regular",
+        icons: iconsLucide,
+      },
+    ],
   },
   {
     id: "iconoir",
@@ -43,3 +50,12 @@ export const icons: IconSet[] = [
     ],
   },
 ];
+
+export const defaultIconSetSettings: Record<string, IconSetSettings> =
+  icons.reduce(
+    (settings, { id }) => ({
+      ...settings,
+      [id]: { selectedVariant: "regular" },
+    }),
+    {},
+  );

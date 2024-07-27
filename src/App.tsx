@@ -7,7 +7,7 @@ import SearchInput from "./SearchInput";
 import GridList from "./GridList";
 import ControlsBar from "./ControlsBar";
 
-import lucideIcons from "../data/icons/lucide.json";
+import { Icons, icons } from "./icons";
 
 function App() {
   const url = new URL(window.location.href);
@@ -30,30 +30,48 @@ function App() {
     };
   }, []);
 
-  const iconList = Object.entries(lucideIcons)
-    .filter(([name]) => {
-      return name.toLowerCase().includes(searchPhrase.toLowerCase());
-    })
-    .map(
-      ([
-        name,
-        {
-          svg: { attributes, elements },
-        },
-      ]) => {
-        const svg = `<svg ${attributes}>${elements}</svg>`;
-        const icon = <Icon attributes={attributes} elements={elements} />;
+  const iconLists = icons.flatMap(({ name, icons }) => {
+    if (Array.isArray(icons)) {
+      return icons.map(({ variant, icons }) => {
+        return {
+          name: `${name} (${variant})`,
+          icons: getIconList(icons),
+        };
+      });
+    }
 
-        return (
-          <IconButton
-            label={`Insert icon: ${name}`}
-            onClick={() => handleIconButtonClick(name, svg)}
-          >
-            {icon}
-          </IconButton>
-        );
-      },
-    );
+    return {
+      name,
+      icons: getIconList(icons),
+    };
+  });
+
+  function getIconList(icons: Icons) {
+    return Object.entries(icons)
+      .filter(([name]) => {
+        return name.toLowerCase().includes(searchPhrase.toLowerCase());
+      })
+      .map(
+        ([
+          name,
+          {
+            svg: { attributes, elements },
+          },
+        ]) => {
+          const svg = `<svg ${attributes}>${elements}</svg>`;
+          const icon = <Icon attributes={attributes} elements={elements} />;
+
+          return (
+            <IconButton
+              label={`Insert icon: ${name}`}
+              onClick={() => handleIconButtonClick(name, svg)}
+            >
+              {icon}
+            </IconButton>
+          );
+        },
+      );
+  }
 
   function handleIconButtonClick(name: string, svg: string) {
     window.parent.postMessage(
@@ -65,6 +83,18 @@ function App() {
     );
   }
 
+  const iconGrids = iconLists.map(({ name, icons }) => {
+    return (
+      <>
+        <p className="title-m">{name}</p>
+        <GridList
+          items={icons}
+          emptyMessage={`No icons found for "${searchPhrase}"`}
+        />
+      </>
+    );
+  });
+
   return (
     <div className="app" data-theme={theme}>
       <ControlsBar>
@@ -74,10 +104,7 @@ function App() {
           onChange={setSearchPhrase}
         />
       </ControlsBar>
-      <GridList
-        items={iconList}
-        emptyMessage={`No icons found for "${searchPhrase}"`}
-      />
+      {iconGrids}
     </div>
   );
 }

@@ -93,16 +93,18 @@ function App() {
 
     return (
       <>
-        <h2>{title}</h2>
-        {hasMultipleVariants && (
-          <Select
-            label="Variant"
-            options={variantOptions}
-            onChange={(event) =>
-              updateSettings(id, { selectedVariant: event.target.value })
-            }
-          />
-        )}
+        <ControlsBar>
+          <h2>{title}</h2>
+          {hasMultipleVariants && (
+            <Select
+              label="Variant"
+              options={variantOptions}
+              onChange={(event) =>
+                updateSettings(id, { selectedVariant: event.target.value })
+              }
+            />
+          )}
+        </ControlsBar>
         <GridList
           items={icons}
           emptyMessage={`No icons found for "${searchPhrase}"`}
@@ -126,7 +128,7 @@ function App() {
 
   return (
     <div className="app" data-theme={theme}>
-      <ControlsBar>
+      <ControlsBar isSticky={true}>
         <SearchInput
           label="Search icon"
           placeholder="e.g. arrow"

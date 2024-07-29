@@ -1,8 +1,16 @@
 .controls-bar {
-  position: sticky;
-  top: 0;
+  display: flex;
 
   padding: 8px 0;
+}
+
+.controls-bar > :first-child {
+  flex-grow: 1;
+}
+
+.controls-bar.sticky {
+  position: sticky;
+  top: 0;
 }
 
 [data-theme="dark"] .controls-bar {

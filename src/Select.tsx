@@ -1,4 +1,5 @@
 import { ChangeEventHandler } from "react";
+import "./Select.css";
 
 type SelectProps = {
   label: string;
@@ -17,7 +18,11 @@ export default function Select({ label, options, onChange }: SelectProps) {
       <label className="select-label-hidden" htmlFor="variant-select">
         {label}
       </label>
-      <select className="select" id="variant-select" onChange={onChange}>
+      <select
+        className="select dropdown-icon-fix"
+        id="variant-select"
+        onChange={onChange}
+      >
         {options.map(({ label, value }) => (
           <option value={value}>{label}</option>
         ))}

@@ -94,7 +94,7 @@ function App() {
     return (
       <>
         <ControlsBar>
-          <h2>{title}</h2>
+          <h1 className="title-m">{title}</h1>
           {hasMultipleVariants && (
             <Select
               label="Variant"

@@ -19,7 +19,7 @@ export default function Select({ label, options, onChange }: SelectProps) {
         {label}
       </label>
       <select
-        className="select dropdown-icon-fix"
+        className="select dropdown-icon-fix spacing-fix"
         id="variant-select"
         onChange={onChange}
       >

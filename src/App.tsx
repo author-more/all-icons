@@ -107,7 +107,7 @@ function App() {
         </ControlsBar>
         <GridList
           items={icons}
-          emptyMessage={`No icons found for "${searchPhrase}"`}
+          emptyMessage={`No icons found for "${searchPhrase}" in ${title} library.`}
         />
       </>
     );

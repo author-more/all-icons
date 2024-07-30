@@ -68,6 +68,7 @@ function App() {
 
           return (
             <IconButton
+              key={`icon-${name}`}
               label={`Insert icon: ${name}`}
               onClick={() => handleIconButtonClick(name, svg)}
             >

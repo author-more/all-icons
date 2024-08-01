@@ -1,4 +1,6 @@
-![All Icons](logo.svg)
+<div align="center">
+  <img src="logo.svg" alt="An infinity sign inside a square with rounded corners." />
+</div>
 
 # All Icons
 

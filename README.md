@@ -1,30 +1,22 @@
-# React + TypeScript + Vite
+![All Icons](logo.svg)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# All Icons
 
-Currently, two official plugins are available:
+All Icons is a Penpot plugin that allows you to easily access icons from various icon libraries and add them to your project.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
 
-## Expanding the ESLint configuration
+Penpot plugins are still in development and not yet available in the live Penpot release.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Development
 
-- Configure the top-level `parserOptions` property like this:
+You need to have an environment with Node.js installed to work on the plugin.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json", "./tsconfig.node.json"],
-    tsconfigRootDir: __dirname,
-  },
-};
-```
+1. Clone the repository.
+2. Run `npm ci` to install the dependencies.
+3. Run `npm run dev` to start the server.
+4. Open Penpot and go to the plugin manager.
+5. Add a new plugin with the URL `http://localhost:4173/manifest.json`.
+6. Use the plugin manager to open the plugin.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Currently the development setup is using the production build in watch mode. This means hot module replacement is not available and you need to reload the plugin manually after making changes.

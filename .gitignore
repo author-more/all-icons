@@ -26,3 +26,9 @@ dist-ssr
 # Plugin data
 /data/icons/*
 !/data/icons/.gitkeep
+
+# Test files
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

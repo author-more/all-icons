@@ -1,10 +1,17 @@
 import { iconPackages } from "./config";
 import { getFilesByExtension, writeToJSONFile, readFile } from "./files";
 
+type Icon = {
+  svg: {
+    attributes: string;
+    elements: string;
+  };
+};
+
 iconPackages.forEach(({ id, iconsDir }: (typeof iconPackages)[number]) => {
   const files = getFilesByExtension(iconsDir, ".svg");
 
-  const icons = {};
+  const icons: Record<string, Icon> = {};
   for (const file of files) {
     const svg = readFile(iconsDir, file);
 

@@ -16,9 +16,10 @@ You need to have an environment with Node.js installed to work on the plugin.
 
 1. Clone the repository.
 2. Run `npm ci` to install the dependencies.
-3. Run `npm run dev` to start the server.
-4. Open Penpot and go to the plugin manager.
-5. Add a new plugin with the URL `http://localhost:4173/manifest.json`.
-6. Use the plugin manager to open the plugin.
+3. Run `npm run generate-data` to generate the data for icon libraries.
+4. Run `npm run dev` to start the server.
+5. Open Penpot and go to the plugin manager.
+6. Add a new plugin with the URL `http://localhost:4173/manifest.json`.
+7. Use the plugin manager to open the plugin.
 
 Currently the development setup is using the production build in watch mode. This means hot module replacement is not available and you need to reload the plugin manually after making changes.

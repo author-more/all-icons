@@ -9,5 +9,5 @@
     "strict": true,
     "noEmit": true
   },
-  "include": ["vite.config.ts", "bin"]
+  "include": ["vite.config.ts", "bin", "playwright.config.ts", "tests"]
 }

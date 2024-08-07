@@ -102,7 +102,10 @@ function App() {
             <ControlsBar>
               <h1 className="title-m">{title}</h1>
               <LinkTag href={website}>Website</LinkTag>
-              <LinkTag href={license.url}>License: {license.name}</LinkTag>
+              <LinkTag href={license.url}>
+                License: {license.name}
+                <sup>*</sup>
+              </LinkTag>
             </ControlsBar>
             {hasMultipleVariants && (
               <Select
@@ -146,6 +149,11 @@ function App() {
         />
       </ControlsBar>
       {iconGrids}
+      <p className="caption">
+        <sup>*</sup>Information about license is provided for informational
+        purposes only, in the best effort manner. Always check the official
+        source before using the icons.
+      </p>
     </div>
   );
 }

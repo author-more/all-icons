@@ -1,11 +1,12 @@
 .controls-bar {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 
-  padding: 8px 0;
+  padding: var(--spacing-4) 0;
 }
 
-.controls-bar > :first-child {
+.controls-bar.grow-first > :first-child {
   flex-grow: 1;
 }
 

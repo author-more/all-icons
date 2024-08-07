@@ -8,6 +8,7 @@ import GridList from "./GridList";
 import ControlsBar from "./ControlsBar";
 import { Icons, icons, defaultIconSetSettings } from "./icons";
 import Select from "./Select";
+import LinkTag from "./LinkTag";
 
 function App() {
   const url = new URL(window.location.href);
@@ -34,7 +35,7 @@ function App() {
     };
   }, []);
 
-  const iconLists = icons.map(({ id, name, icons }) => {
+  const iconLists = icons.map(({ id, name, website, license, icons }) => {
     const selectedVariant = iconSetsSettings[id].selectedVariant;
     const iconsByVariant =
       icons.find(({ variant }) => variant === selectedVariant)?.icons || {};
@@ -46,6 +47,8 @@ function App() {
     return {
       id,
       title: name,
+      website,
+      license,
       variantOptions,
       icons: getIconList(iconsByVariant),
     };
@@ -89,30 +92,36 @@ function App() {
     );
   }
 
-  const iconGrids = iconLists.map(({ id, title, variantOptions, icons }) => {
-    const hasMultipleVariants = variantOptions.length > 1;
+  const iconGrids = iconLists.map(
+    ({ id, title, website, license, variantOptions, icons }) => {
+      const hasMultipleVariants = variantOptions.length > 1;
 
-    return (
-      <>
-        <ControlsBar>
-          <h1 className="title-m">{title}</h1>
-          {hasMultipleVariants && (
-            <Select
-              label="Variant"
-              options={variantOptions}
-              onChange={(event) =>
-                updateSettings(id, { selectedVariant: event.target.value })
-              }
-            />
-          )}
-        </ControlsBar>
-        <GridList
-          items={icons}
-          emptyMessage={`No icons found for "${searchPhrase}" in ${title} library.`}
-        />
-      </>
-    );
-  });
+      return (
+        <>
+          <ControlsBar growFirstItem={true}>
+            <ControlsBar>
+              <h1 className="title-m">{title}</h1>
+              <LinkTag href={website}>Website</LinkTag>
+              <LinkTag href={license.url}>License: {license.name}</LinkTag>
+            </ControlsBar>
+            {hasMultipleVariants && (
+              <Select
+                label="Variant"
+                options={variantOptions}
+                onChange={(event) =>
+                  updateSettings(id, { selectedVariant: event.target.value })
+                }
+              />
+            )}
+          </ControlsBar>
+          <GridList
+            items={icons}
+            emptyMessage={`No icons found for "${searchPhrase}" in ${title} library.`}
+          />
+        </>
+      );
+    },
+  );
 
   function updateSettings(
     id: string,
@@ -129,7 +138,7 @@ function App() {
 
   return (
     <div className="app" data-theme={theme}>
-      <ControlsBar isSticky={true}>
+      <ControlsBar stickToTop={true} growFirstItem={true}>
         <SearchInput
           label="Search icon"
           placeholder="e.g. arrow"

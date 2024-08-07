@@ -1,0 +1,18 @@
+.link-tag {
+  border-radius: var(--spacing-4);
+
+  padding: 0.1rem var(--spacing-8);
+
+  text-decoration: none;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .link-tag {
+  background: var(--db-tertiary);
+  color: var(--df-secondary);
+}
+
+[data-theme="light"] .link-tag {
+  background: var(--lb-tertiary);
+  color: var(--lf-secondary);
+}

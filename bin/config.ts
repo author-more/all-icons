@@ -3,12 +3,12 @@ export const iconPackages = [
     id: "lucide",
     iconsDir: "../node_modules/lucide-static/icons",
   },
-  {
-    id: "iconoir-regular",
-    iconsDir: "../node_modules/iconoir/icons/regular",
-  },
-  {
-    id: "iconoir-solid",
-    iconsDir: "../node_modules/iconoir/icons/solid",
-  },
+  ...["regular", "solid"].map((variant) => ({
+    id: `iconoir-${variant}`,
+    iconsDir: `../node_modules/iconoir/icons/${variant}`,
+  })),
+  ...["bold", "duotone", "fill", "light", "regular", "thin"].map((variant) => ({
+    id: `phosphor-${variant}`,
+    iconsDir: `../node_modules/@phosphor-icons/core/assets/${variant}`,
+  })),
 ];

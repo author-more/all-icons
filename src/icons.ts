@@ -1,6 +1,12 @@
 import iconsLucide from "../data/icons/lucide.json";
 import iconsIconoirRegular from "../data/icons/iconoir-regular.json";
 import iconsIconoirSolid from "../data/icons/iconoir-solid.json";
+import iconsPhosphorBold from "../data/icons/phosphor-bold.json";
+import iconsPhosphorDuotone from "../data/icons/phosphor-duotone.json";
+import iconsPhosphorFill from "../data/icons/phosphor-fill.json";
+import iconsPhosphorLight from "../data/icons/phosphor-light.json";
+import iconsPhosphorRegular from "../data/icons/phosphor-regular.json";
+import iconsPhosphorThin from "../data/icons/phosphor-thin.json";
 
 export type IconSet = {
   id: string;
@@ -61,6 +67,41 @@ export const icons: IconSet[] = [
       {
         variant: "solid",
         icons: iconsIconoirSolid,
+      },
+    ],
+  },
+  {
+    id: "phosphor",
+    name: "Phosphor",
+    website: "https://phosphoricons.com",
+    license: {
+      name: "MIT",
+      url: "https://raw.githubusercontent.com/phosphor-icons/homepage/master/LICENSE",
+    },
+    icons: [
+      {
+        variant: "bold",
+        icons: iconsPhosphorBold,
+      },
+      {
+        variant: "duotone",
+        icons: iconsPhosphorDuotone,
+      },
+      {
+        variant: "fill",
+        icons: iconsPhosphorFill,
+      },
+      {
+        variant: "light",
+        icons: iconsPhosphorLight,
+      },
+      {
+        variant: "regular",
+        icons: iconsPhosphorRegular,
+      },
+      {
+        variant: "thin",
+        icons: iconsPhosphorThin,
       },
     ],
   },

@@ -9,6 +9,7 @@ import ControlsBar from "./ControlsBar";
 import { Icons, icons, defaultIconSetSettings } from "./icons";
 import Select from "./Select";
 import LinkTag from "./LinkTag";
+import { toSortedBy } from "./sort";
 
 function App() {
   const url = new URL(window.location.href);
@@ -35,24 +36,26 @@ function App() {
     };
   }, []);
 
-  const iconLists = icons.map(({ id, name, website, license, icons }) => {
-    const selectedVariant = iconSetsSettings[id].selectedVariant;
-    const iconsByVariant =
-      icons.find(({ variant }) => variant === selectedVariant)?.icons || {};
-    const variantOptions = icons.map(({ variant }) => ({
-      label: variant,
-      value: variant,
-    }));
+  const iconLists = toSortedBy<(typeof icons)[number]>(icons, "name").map(
+    ({ id, name, website, license, icons }) => {
+      const selectedVariant = iconSetsSettings[id].selectedVariant;
+      const iconsByVariant =
+        icons.find(({ variant }) => variant === selectedVariant)?.icons || {};
+      const variantOptions = icons.map(({ variant }) => ({
+        label: variant,
+        value: variant,
+      }));
 
-    return {
-      id,
-      title: name,
-      website,
-      license,
-      variantOptions,
-      icons: getIconList(iconsByVariant),
-    };
-  });
+      return {
+        id,
+        title: name,
+        website,
+        license,
+        variantOptions,
+        icons: getIconList(iconsByVariant),
+      };
+    },
+  );
 
   function getIconList(icons: Icons) {
     return Object.entries(icons)

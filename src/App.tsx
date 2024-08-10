@@ -7,27 +7,14 @@ import SearchInput from "./SearchInput";
 import GridList from "./GridList";
 import ControlsBar from "./ControlsBar";
 import {
-  Icons,
-  icons,
+  iconLibraries,
   defaultIconSetSettings,
+  getIconSetsByVariant,
   DEFAULT_ICON_SIZE,
 } from "./icons";
 import Select from "./Select";
 import LinkTag from "./LinkTag";
 import { toSortedBy } from "./sort";
-import { isFulfilled } from "./promise";
-
-type IconList = {
-  id: string;
-  title: string;
-  website: string;
-  license: {
-    name: string;
-    url: string;
-  };
-  variantOptions: { label: string; value: string }[];
-  icons: JSX.Element[];
-};
 
 function App() {
   const url = new URL(window.location.href);
@@ -36,7 +23,9 @@ function App() {
   const [theme, setTheme] = useState(initialTheme || null);
   const [searchPhrase, setSearchPhrase] = useState("");
 
-  const [iconLists, setIconLists] = useState<IconList[]>([]);
+  const [iconSets, setIconSets] = useState<
+    Awaited<ReturnType<typeof getIconSetsByVariant>>
+  >([]);
   const [iconSetsSettings, setIconSetsSettings] = useState(
     defaultIconSetSettings,
   );
@@ -56,67 +45,46 @@ function App() {
   }, []);
 
   useEffect(() => {
-    Promise.allSettled(
-      toSortedBy<(typeof icons)[number]>(icons, "name").map(
-        async ({ id, name, website, license, icons }) => {
-          const selectedVariant = iconSetsSettings[id].selectedVariant;
-          const getIconsForVariant = icons.find(
-            ({ variant }) => variant === selectedVariant,
-          )?.getIcons;
-          const variantOptions = icons.map(({ variant }) => ({
-            label: variant,
-            value: variant,
-          }));
-
-          return {
-            id,
-            title: name,
-            website,
-            license,
-            variantOptions,
-            icons: getIconsForVariant
-              ? getIconList(await getIconsForVariant())
-              : [],
-          };
-        },
-      ),
-    )
-      .then((results) => {
-        const iconLists = results.filter(isFulfilled).map(({ value }) => value);
-        setIconLists(iconLists);
+    getIconSetsByVariant(iconLibraries, iconSetsSettings)
+      .then((iconSets) => {
+        const iconSetsSorted = toSortedBy<(typeof iconSets)[number]>(
+          iconSets,
+          "name",
+        );
+        setIconSets(iconSetsSorted);
       })
       .catch((error) => {
         console.error("Failed to load icons", error);
       });
+  }, [iconSetsSettings]);
 
-    function getIconList(icons: Icons) {
-      return Object.entries(icons)
-        .filter(([name]) => {
-          return name.toLowerCase().includes(searchPhrase.toLowerCase());
-        })
-        .map(
-          ([
-            name,
-            {
-              svg: { attributes, elements },
-            },
-          ]) => {
-            const svg = `<svg ${attributes}>${elements}</svg>`;
-            const icon = <Icon attributes={attributes} elements={elements} />;
-
-            return (
-              <IconButton
-                key={`icon-${name}`}
-                label={`Insert icon: ${name}`}
-                onClick={() => handleIconButtonClick(name, svg)}
-              >
-                {icon}
-              </IconButton>
-            );
+  function generateIconList(icons: (typeof iconSets)[number]["icons"]) {
+    return Object.entries(icons)
+      .filter(([name]) => {
+        return name.toLowerCase().includes(searchPhrase.toLowerCase());
+      })
+      .map(
+        ([
+          name,
+          {
+            svg: { attributes, elements },
           },
-        );
-    }
-  }, [iconSetsSettings, searchPhrase]);
+        ]) => {
+          const svg = `<svg ${attributes}>${elements}</svg>`;
+          const icon = <Icon attributes={attributes} elements={elements} />;
+
+          return (
+            <IconButton
+              key={`icon-${name}`}
+              label={`Insert icon: ${name}`}
+              onClick={() => handleIconButtonClick(name, svg)}
+            >
+              {icon}
+            </IconButton>
+          );
+        },
+      );
+  }
 
   function handleIconButtonClick(name: string, svg: string) {
     window.parent.postMessage(
@@ -128,15 +96,15 @@ function App() {
     );
   }
 
-  const iconGrids = iconLists.map(
-    ({ id, title, website, license, variantOptions, icons }) => {
+  const iconGrids = iconSets.map(
+    ({ id, name, website, license, variantOptions, icons }) => {
       const hasMultipleVariants = variantOptions.length > 1;
 
       return (
         <>
           <ControlsBar growFirstItem={true}>
             <ControlsBar>
-              <h1 className="title-m">{title}</h1>
+              <h1 className="title-m">{name}</h1>
               <LinkTag href={website}>Website</LinkTag>
               <LinkTag href={license.url}>
                 License: {license.name}
@@ -148,14 +116,16 @@ function App() {
                 label="Variant"
                 options={variantOptions}
                 onChange={(event) =>
-                  updateSettings(id, { selectedVariant: event.target.value })
+                  updateSettings(id, {
+                    selectedVariant: event.target.value,
+                  })
                 }
               />
             )}
           </ControlsBar>
           <GridList
-            items={icons}
-            emptyMessage={`No icons found for "${searchPhrase}" in ${title} library.`}
+            items={generateIconList(icons)}
+            emptyMessage={`No icons found for "${searchPhrase}" in ${name} library.`}
           />
         </>
       );

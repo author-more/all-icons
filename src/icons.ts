@@ -1,6 +1,8 @@
+import { isFulfilled } from "./promise";
+
 export const DEFAULT_ICON_SIZE = 24;
 
-export type IconSet = {
+type IconLibrary = {
   id: string;
   name: string;
   website: string;
@@ -8,15 +10,20 @@ export type IconSet = {
     name: string;
     url: string;
   };
-  icons: IconSetVariants[];
+  icons: IconSetVariant[];
 };
 
-type IconSetVariants = {
+type IconSet = Omit<IconLibrary, "icons"> & {
+  variantOptions: ReturnType<typeof getVariantOptions>;
+  icons: Icons;
+};
+
+type IconSetVariant = {
   variant: string;
   getIcons: () => Promise<Icons>;
 };
 
-export type Icons = Record<string, Icon>;
+type Icons = Record<string, Icon>;
 
 type Icon = {
   svg: {
@@ -27,7 +34,7 @@ type Icon = {
 
 type IconSetSettings = { selectedVariant: string };
 
-export const icons: IconSet[] = [
+export const iconLibraries: IconLibrary[] = [
   {
     id: "lucide",
     name: "Lucide",
@@ -68,7 +75,7 @@ export const icons: IconSet[] = [
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =
-  icons.reduce(
+  iconLibraries.reduce(
     (settings, { id }) => ({
       ...settings,
       [id]: { selectedVariant: "regular" },
@@ -88,4 +95,34 @@ async function loadIcons(fileName: string) {
     default: Icons;
   };
   return iconsModule.default;
+}
+
+export async function getIconSetsByVariant(
+  iconSets: IconLibrary[],
+  iconSetsSettings: Record<string, IconSetSettings>,
+): Promise<IconSet[]> {
+  const results = await Promise.allSettled(
+    iconSets.map(async (iconSet) => {
+      const { icons, id } = iconSet;
+      const selectedVariant = iconSetsSettings[id].selectedVariant;
+      const getIconsForVariant = icons.find(
+        ({ variant }) => variant === selectedVariant,
+      )?.getIcons;
+
+      return {
+        ...iconSet,
+        variantOptions: getVariantOptions(icons),
+        icons: getIconsForVariant ? await getIconsForVariant() : {},
+      };
+    }),
+  );
+
+  return results.filter(isFulfilled).map(({ value }) => value);
+}
+
+export function getVariantOptions(icons: IconSetVariant[]) {
+  return icons.map(({ variant }) => ({
+    label: variant,
+    value: variant,
+  }));
 }

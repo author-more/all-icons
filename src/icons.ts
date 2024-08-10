@@ -11,6 +11,7 @@ type IconLibrary = {
     url: string;
   };
   icons: IconSetVariant[];
+  defaultSettings?: IconSetSettings;
 };
 
 type IconSet = Omit<IconLibrary, "icons"> & {
@@ -72,13 +73,30 @@ export const iconLibraries: IconLibrary[] = [
       "thin",
     ]),
   },
+  {
+    id: "material-design",
+    name: "Material Design",
+    website: "https://fonts.google.com/icons",
+    license: {
+      name: "Apache-2.0",
+      url: "https://github.com/google/material-design-icons/blob/master/LICENSE",
+    },
+    icons: generateVariants("material-design", [
+      "filled",
+      "outlined",
+      "round",
+      "sharp",
+      "two-tone",
+    ]),
+    defaultSettings: { selectedVariant: "outlined" },
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =
   iconLibraries.reduce(
-    (settings, { id }) => ({
+    (settings, { id, defaultSettings }) => ({
       ...settings,
-      [id]: { selectedVariant: "regular" },
+      [id]: { selectedVariant: "regular", ...defaultSettings },
     }),
     {},
   );

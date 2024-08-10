@@ -11,4 +11,8 @@ export const iconPackages = [
     id: `phosphor-${variant}`,
     iconsDir: `../node_modules/@phosphor-icons/core/assets/${variant}`,
   })),
+  ...["filled", "outlined", "round", "sharp", "two-tone"].map((variant) => ({
+    id: `material-design-${variant}`,
+    iconsDir: `../node_modules/@material-design-icons/svg/${variant}`,
+  })),
 ];

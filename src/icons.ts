@@ -1,13 +1,3 @@
-import iconsLucide from "../data/icons/lucide.json";
-import iconsIconoirRegular from "../data/icons/iconoir-regular.json";
-import iconsIconoirSolid from "../data/icons/iconoir-solid.json";
-import iconsPhosphorBold from "../data/icons/phosphor-bold.json";
-import iconsPhosphorDuotone from "../data/icons/phosphor-duotone.json";
-import iconsPhosphorFill from "../data/icons/phosphor-fill.json";
-import iconsPhosphorLight from "../data/icons/phosphor-light.json";
-import iconsPhosphorRegular from "../data/icons/phosphor-regular.json";
-import iconsPhosphorThin from "../data/icons/phosphor-thin.json";
-
 export type IconSet = {
   id: string;
   name: string;
@@ -21,7 +11,7 @@ export type IconSet = {
 
 type IconSetVariants = {
   variant: string;
-  icons: Icons;
+  getIcons: () => Promise<Icons>;
 };
 
 export type Icons = Record<string, Icon>;
@@ -44,12 +34,7 @@ export const icons: IconSet[] = [
       name: "ISC",
       url: "https://lucide.dev/license",
     },
-    icons: [
-      {
-        variant: "regular",
-        icons: iconsLucide,
-      },
-    ],
+    icons: generateVariants("lucide", ["regular"]),
   },
   {
     id: "iconoir",
@@ -59,16 +44,7 @@ export const icons: IconSet[] = [
       name: "MIT",
       url: "https://github.com/iconoir-icons/iconoir/blob/main/LICENSE",
     },
-    icons: [
-      {
-        variant: "regular",
-        icons: iconsIconoirRegular,
-      },
-      {
-        variant: "solid",
-        icons: iconsIconoirSolid,
-      },
-    ],
+    icons: generateVariants("iconoir", ["regular", "solid"]),
   },
   {
     id: "phosphor",
@@ -78,32 +54,14 @@ export const icons: IconSet[] = [
       name: "MIT",
       url: "https://raw.githubusercontent.com/phosphor-icons/homepage/master/LICENSE",
     },
-    icons: [
-      {
-        variant: "bold",
-        icons: iconsPhosphorBold,
-      },
-      {
-        variant: "duotone",
-        icons: iconsPhosphorDuotone,
-      },
-      {
-        variant: "fill",
-        icons: iconsPhosphorFill,
-      },
-      {
-        variant: "light",
-        icons: iconsPhosphorLight,
-      },
-      {
-        variant: "regular",
-        icons: iconsPhosphorRegular,
-      },
-      {
-        variant: "thin",
-        icons: iconsPhosphorThin,
-      },
-    ],
+    icons: generateVariants("phosphor", [
+      "bold",
+      "duotone",
+      "fill",
+      "light",
+      "regular",
+      "thin",
+    ]),
   },
 ];
 
@@ -115,3 +73,17 @@ export const defaultIconSetSettings: Record<string, IconSetSettings> =
     }),
     {},
   );
+
+function generateVariants(iconSetId: string, variants: string[]) {
+  return variants.map((variant) => ({
+    variant,
+    getIcons: () => loadIcons(`${iconSetId}-${variant}`),
+  }));
+}
+
+async function loadIcons(fileName: string) {
+  const iconsModule = (await import(`../data/icons/${fileName}.json`)) as {
+    default: Icons;
+  };
+  return iconsModule.default;
+}

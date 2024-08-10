@@ -1,6 +1,6 @@
 export const iconPackages = [
   {
-    id: "lucide",
+    id: "lucide-regular",
     iconsDir: "../node_modules/lucide-static/icons",
   },
   ...["regular", "solid"].map((variant) => ({

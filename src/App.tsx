@@ -10,6 +10,19 @@ import { Icons, icons, defaultIconSetSettings } from "./icons";
 import Select from "./Select";
 import LinkTag from "./LinkTag";
 import { toSortedBy } from "./sort";
+import { isFulfilled } from "./promise";
+
+type IconList = {
+  id: string;
+  title: string;
+  website: string;
+  license: {
+    name: string;
+    url: string;
+  };
+  variantOptions: { label: string; value: string }[];
+  icons: JSX.Element[];
+};
 
 function App() {
   const url = new URL(window.location.href);
@@ -18,6 +31,7 @@ function App() {
   const [theme, setTheme] = useState(initialTheme || null);
   const [searchPhrase, setSearchPhrase] = useState("");
 
+  const [iconLists, setIconLists] = useState<IconList[]>([]);
   const [iconSetsSettings, setIconSetsSettings] = useState(
     defaultIconSetSettings,
   );
@@ -36,54 +50,68 @@ function App() {
     };
   }, []);
 
-  const iconLists = toSortedBy<(typeof icons)[number]>(icons, "name").map(
-    ({ id, name, website, license, icons }) => {
-      const selectedVariant = iconSetsSettings[id].selectedVariant;
-      const iconsByVariant =
-        icons.find(({ variant }) => variant === selectedVariant)?.icons || {};
-      const variantOptions = icons.map(({ variant }) => ({
-        label: variant,
-        value: variant,
-      }));
+  useEffect(() => {
+    Promise.allSettled(
+      toSortedBy<(typeof icons)[number]>(icons, "name").map(
+        async ({ id, name, website, license, icons }) => {
+          const selectedVariant = iconSetsSettings[id].selectedVariant;
+          const getIconsForVariant = icons.find(
+            ({ variant }) => variant === selectedVariant,
+          )?.getIcons;
+          const variantOptions = icons.map(({ variant }) => ({
+            label: variant,
+            value: variant,
+          }));
 
-      return {
-        id,
-        title: name,
-        website,
-        license,
-        variantOptions,
-        icons: getIconList(iconsByVariant),
-      };
-    },
-  );
-
-  function getIconList(icons: Icons) {
-    return Object.entries(icons)
-      .filter(([name]) => {
-        return name.toLowerCase().includes(searchPhrase.toLowerCase());
-      })
-      .map(
-        ([
-          name,
-          {
-            svg: { attributes, elements },
-          },
-        ]) => {
-          const svg = `<svg ${attributes}>${elements}</svg>`;
-          const icon = <Icon attributes={attributes} elements={elements} />;
-
-          return (
-            <IconButton
-              key={`icon-${name}`}
-              label={`Insert icon: ${name}`}
-              onClick={() => handleIconButtonClick(name, svg)}
-            >
-              {icon}
-            </IconButton>
-          );
+          return {
+            id,
+            title: name,
+            website,
+            license,
+            variantOptions,
+            icons: getIconsForVariant
+              ? getIconList(await getIconsForVariant())
+              : [],
+          };
         },
-      );
-  }
+      ),
+    )
+      .then((results) => {
+        const iconLists = results.filter(isFulfilled).map(({ value }) => value);
+        setIconLists(iconLists);
+      })
+      .catch((error) => {
+        console.error("Failed to load icons", error);
+      });
+
+    function getIconList(icons: Icons) {
+      return Object.entries(icons)
+        .filter(([name]) => {
+          return name.toLowerCase().includes(searchPhrase.toLowerCase());
+        })
+        .map(
+          ([
+            name,
+            {
+              svg: { attributes, elements },
+            },
+          ]) => {
+            const svg = `<svg ${attributes}>${elements}</svg>`;
+            const icon = <Icon attributes={attributes} elements={elements} />;
+
+            return (
+              <IconButton
+                key={`icon-${name}`}
+                label={`Insert icon: ${name}`}
+                onClick={() => handleIconButtonClick(name, svg)}
+              >
+                {icon}
+              </IconButton>
+            );
+          },
+        );
+    }
+  }, [iconSetsSettings, searchPhrase]);
 
   function handleIconButtonClick(name: string, svg: string) {
     window.parent.postMessage(

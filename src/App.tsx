@@ -6,7 +6,12 @@ import Icon from "./Icon";
 import SearchInput from "./SearchInput";
 import GridList from "./GridList";
 import ControlsBar from "./ControlsBar";
-import { Icons, icons, defaultIconSetSettings } from "./icons";
+import {
+  Icons,
+  icons,
+  defaultIconSetSettings,
+  DEFAULT_ICON_SIZE,
+} from "./icons";
 import Select from "./Select";
 import LinkTag from "./LinkTag";
 import { toSortedBy } from "./sort";
@@ -117,7 +122,7 @@ function App() {
     window.parent.postMessage(
       {
         type: "insert-icon",
-        content: { name, svg },
+        content: { name, svg, size: DEFAULT_ICON_SIZE },
       },
       "*",
     );

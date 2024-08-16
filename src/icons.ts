@@ -1,8 +1,8 @@
-import iconsLucide from "../data/icons/lucide.json";
-import iconsIconoirRegular from "../data/icons/iconoir-regular.json";
-import iconsIconoirSolid from "../data/icons/iconoir-solid.json";
+import { isFulfilled } from "./promise";
 
-export type IconSet = {
+export const DEFAULT_ICON_SIZE = 24;
+
+type IconLibrary = {
   id: string;
   name: string;
   website: string;
@@ -10,15 +10,21 @@ export type IconSet = {
     name: string;
     url: string;
   };
-  icons: IconSetVariants[];
+  icons: IconSetVariant[];
+  defaultSettings?: IconSetSettings;
 };
 
-type IconSetVariants = {
-  variant: string;
+type IconSet = Omit<IconLibrary, "icons"> & {
+  variantOptions: ReturnType<typeof getVariantOptions>;
   icons: Icons;
 };
 
-export type Icons = Record<string, Icon>;
+type IconSetVariant = {
+  variant: string;
+  getIcons: () => Promise<Icons>;
+};
+
+type Icons = Record<string, Icon>;
 
 type Icon = {
   svg: {
@@ -29,7 +35,7 @@ type Icon = {
 
 type IconSetSettings = { selectedVariant: string };
 
-export const icons: IconSet[] = [
+export const iconLibraries: IconLibrary[] = [
   {
     id: "lucide",
     name: "Lucide",
@@ -38,12 +44,7 @@ export const icons: IconSet[] = [
       name: "ISC",
       url: "https://lucide.dev/license",
     },
-    icons: [
-      {
-        variant: "regular",
-        icons: iconsLucide,
-      },
-    ],
+    icons: generateVariants("lucide", ["regular"]),
   },
   {
     id: "iconoir",
@@ -53,24 +54,93 @@ export const icons: IconSet[] = [
       name: "MIT",
       url: "https://github.com/iconoir-icons/iconoir/blob/main/LICENSE",
     },
-    icons: [
-      {
-        variant: "regular",
-        icons: iconsIconoirRegular,
-      },
-      {
-        variant: "solid",
-        icons: iconsIconoirSolid,
-      },
-    ],
+    icons: generateVariants("iconoir", ["regular", "solid"]),
+  },
+  {
+    id: "phosphor",
+    name: "Phosphor",
+    website: "https://phosphoricons.com",
+    license: {
+      name: "MIT",
+      url: "https://raw.githubusercontent.com/phosphor-icons/homepage/master/LICENSE",
+    },
+    icons: generateVariants("phosphor", [
+      "bold",
+      "duotone",
+      "fill",
+      "light",
+      "regular",
+      "thin",
+    ]),
+  },
+  {
+    id: "material-design",
+    name: "Material Design",
+    website: "https://fonts.google.com/icons",
+    license: {
+      name: "Apache-2.0",
+      url: "https://github.com/google/material-design-icons/blob/master/LICENSE",
+    },
+    icons: generateVariants("material-design", [
+      "filled",
+      "outlined",
+      "round",
+      "sharp",
+      "two-tone",
+    ]),
+    defaultSettings: { selectedVariant: "outlined" },
   },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =
-  icons.reduce(
-    (settings, { id }) => ({
+  iconLibraries.reduce(
+    (settings, { id, defaultSettings }) => ({
       ...settings,
-      [id]: { selectedVariant: "regular" },
+      [id]: { selectedVariant: "regular", ...defaultSettings },
     }),
     {},
   );
+
+function generateVariants(iconSetId: string, variants: string[]) {
+  return variants.map((variant) => ({
+    variant,
+    getIcons: () => loadIcons(`${iconSetId}-${variant}`),
+  }));
+}
+
+async function loadIcons(fileName: string) {
+  const iconsModule = (await import(`../data/icons/${fileName}.json`)) as {
+    default: Icons;
+  };
+  return iconsModule.default;
+}
+
+export async function getIconSetsByVariant(
+  iconSets: IconLibrary[],
+  iconSetsSettings: Record<string, IconSetSettings>,
+): Promise<IconSet[]> {
+  const results = await Promise.allSettled(
+    iconSets.map(async (iconSet) => {
+      const { icons, id } = iconSet;
+      const selectedVariant = iconSetsSettings[id].selectedVariant;
+      const getIconsForVariant = icons.find(
+        ({ variant }) => variant === selectedVariant,
+      )?.getIcons;
+
+      return {
+        ...iconSet,
+        variantOptions: getVariantOptions(icons),
+        icons: getIconsForVariant ? await getIconsForVariant() : {},
+      };
+    }),
+  );
+
+  return results.filter(isFulfilled).map(({ value }) => value);
+}
+
+export function getVariantOptions(icons: IconSetVariant[]) {
+  return icons.map(({ variant }) => ({
+    label: variant,
+    value: variant,
+  }));
+}

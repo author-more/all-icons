@@ -4,6 +4,7 @@ import "./Select.css";
 type SelectProps = {
   label: string;
   options: Options[];
+  value: string;
   onChange: ChangeEventHandler<HTMLSelectElement>;
 };
 
@@ -12,7 +13,12 @@ type Options = {
   value: string;
 };
 
-export default function Select({ label, options, onChange }: SelectProps) {
+export default function Select({
+  label,
+  options,
+  value: selectedValue,
+  onChange,
+}: SelectProps) {
   return (
     <div className="form-group">
       <label className="select-label-hidden" htmlFor="variant-select">
@@ -23,11 +29,15 @@ export default function Select({ label, options, onChange }: SelectProps) {
         id="variant-select"
         onChange={onChange}
       >
-        {options.map(({ label, value }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
+        {options.map(({ label, value }) => {
+          const isSelected = value === selectedValue;
+
+          return (
+            <option key={value} value={value} selected={isSelected}>
+              {label}
+            </option>
+          );
+        })}
       </select>
     </div>
   );

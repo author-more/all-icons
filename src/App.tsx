@@ -115,6 +115,7 @@ function App() {
               <Select
                 label="Variant"
                 options={variantOptions}
+                value={iconSetsSettings[id].selectedVariant}
                 onChange={(event) =>
                   updateSettings(id, {
                     selectedVariant: event.target.value,

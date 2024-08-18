@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo.svg" alt="An infinity sign inside a square with rounded corners." />
+  <img src="gh-panel.png" alt="An infinity sign inside a square with rounded corners. On the right, All Icons plugin's window with the search input at the top, an icon set's title bar with a name, links, and a style selector, with a grid of icons under it." />
 </div>
 
 # All Icons
@@ -8,7 +8,14 @@ All Icons is a Penpot plugin that allows you to easily access icons from various
 
 ## Installation
 
-Penpot plugins are still in development and not yet available in the live Penpot release.
+> Penpot Plugins system is currently in development and not yet available in the live Penpot release.
+
+1. Go to a Penpot project.
+2. Open the plugin manager.
+3. Fill the plugin URL input with `https://allicons.authormore.com/manifest.json`.
+4. Click the "Install" button.
+5. Follow the instructions on the screen.
+6. Use the plugin manager to open the plugin.
 
 ## Development
 
@@ -23,3 +30,7 @@ You need to have an environment with Node.js installed to work on the plugin.
 7. Use the plugin manager to open the plugin.
 
 Currently the development setup is using the production build in watch mode. This means hot module replacement is not available and you need to reload the plugin manually after making changes.
+
+## Credits
+
+Readme image's background pattern by [Jean-Philippe Delberghe](https://unsplash.com/photos/a-close-up-of-a-white-wall-with-wavy-lines-75xPHEQBmvA).

@@ -11,7 +11,7 @@ type IconLibrary = {
     url: string;
   };
   icons: IconSetVariant[];
-  defaultSettings?: IconSetSettings;
+  defaultSettings?: Partial<IconSetSettings>;
 };
 
 type IconSet = Omit<IconLibrary, "icons"> & {
@@ -33,7 +33,7 @@ type Icon = {
   };
 };
 
-type IconSetSettings = { selectedVariant: string };
+type IconSetSettings = { selectedVariant: string; showIcons: boolean };
 
 export const iconLibraries: IconLibrary[] = [
   {
@@ -96,7 +96,11 @@ export const defaultIconSetSettings: Record<string, IconSetSettings> =
   iconLibraries.reduce(
     (settings, { id, defaultSettings }) => ({
       ...settings,
-      [id]: { selectedVariant: "regular", ...defaultSettings },
+      [id]: {
+        selectedVariant: "regular",
+        showIcons: false,
+        ...defaultSettings,
+      },
     }),
     {},
   );

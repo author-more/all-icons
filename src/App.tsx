@@ -15,6 +15,7 @@ import {
 import Select from "./Select";
 import LinkTag from "./LinkTag";
 import { toSortedBy } from "./sort";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 function App() {
   const url = new URL(window.location.href);
@@ -96,14 +97,30 @@ function App() {
     );
   }
 
+  function toggleShowIcons(id: string) {
+    updateSettings(id, { showIcons: !iconSetsSettings[id].showIcons });
+  }
+
   const iconGrids = iconSets.map(
     ({ id, name, website, license, variantOptions, icons }) => {
       const hasMultipleVariants = variantOptions.length > 1;
+      const { showIcons: shouldShowIcons } = iconSetsSettings[id];
 
       return (
         <>
           <ControlsBar growFirstItem={true}>
             <ControlsBar>
+              <IconButton
+                label={`${shouldShowIcons ? "Hide" : "Show"} ${name} icon set`}
+                onClick={() => toggleShowIcons(id)}
+                size="compact"
+              >
+                {shouldShowIcons ? (
+                  <ChevronDown size={12} />
+                ) : (
+                  <ChevronRight size={12} />
+                )}
+              </IconButton>
               <h1 className="title-m">{name}</h1>
               <LinkTag href={website}>Website</LinkTag>
               <LinkTag href={license.url}>
@@ -111,7 +128,7 @@ function App() {
                 <sup>*</sup>
               </LinkTag>
             </ControlsBar>
-            {hasMultipleVariants && (
+            {shouldShowIcons && hasMultipleVariants && (
               <Select
                 label="Variant"
                 options={variantOptions}
@@ -124,10 +141,12 @@ function App() {
               />
             )}
           </ControlsBar>
-          <GridList
-            items={generateIconList(icons)}
-            emptyMessage={`No icons found for "${searchPhrase}" in ${name} library.`}
-          />
+          {shouldShowIcons && (
+            <GridList
+              items={generateIconList(icons)}
+              emptyMessage={`No icons found for "${searchPhrase}" in ${name} library.`}
+            />
+          )}
         </>
       );
     },
@@ -135,7 +154,9 @@ function App() {
 
   function updateSettings(
     id: string,
-    settings: (typeof defaultIconSetSettings)[keyof typeof defaultIconSetSettings],
+    settings: Partial<
+      (typeof defaultIconSetSettings)[keyof typeof defaultIconSetSettings]
+    >,
   ) {
     setIconSetsSettings((currentSettings) => ({
       ...currentSettings,

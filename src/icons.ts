@@ -1,6 +1,7 @@
 import { isFulfilled } from "./promise";
 
 export const DEFAULT_ICON_SIZE = 24;
+export const DATA_KEY_ICON_SETS_SETTINGS = "iconSetsSettings";
 
 type IconLibrary = {
   id: string;
@@ -119,27 +120,35 @@ async function loadIcons(fileName: string) {
   return iconsModule.default;
 }
 
-export async function getIconSetsByVariant(
+export function getIconSetsByVariant(
   iconSets: IconLibrary[],
   iconSetsSettings: Record<string, IconSetSettings>,
-): Promise<IconSet[]> {
-  const results = await Promise.allSettled(
-    iconSets.map(async (iconSet) => {
-      const { icons, id } = iconSet;
-      const selectedVariant = iconSetsSettings[id].selectedVariant;
-      const getIconsForVariant = icons.find(
-        ({ variant }) => variant === selectedVariant,
-      )?.getIcons;
+): [Promise<IconSet[]>, AbortController] {
+  const abortController = new AbortController();
+  const { signal } = abortController;
 
-      return {
-        ...iconSet,
-        variantOptions: getVariantOptions(icons),
-        icons: getIconsForVariant ? await getIconsForVariant() : {},
-      };
-    }),
-  );
+  const getIconSets = async function () {
+    const results = await Promise.allSettled(
+      iconSets.map(async (iconSet) => {
+        const { icons, id } = iconSet;
+        const selectedVariant = iconSetsSettings[id].selectedVariant;
+        const getIconsForVariant = icons.find(
+          ({ variant }) => variant === selectedVariant,
+        )?.getIcons;
 
-  return results.filter(isFulfilled).map(({ value }) => value);
+        return {
+          ...iconSet,
+          variantOptions: getVariantOptions(icons),
+          icons: getIconsForVariant ? await getIconsForVariant() : {},
+        };
+      }),
+    );
+
+    signal.throwIfAborted();
+    return results.filter(isFulfilled).map(({ value }) => value);
+  };
+
+  return [getIconSets(), abortController];
 }
 
 export function getVariantOptions(icons: IconSetVariant[]) {

@@ -11,6 +11,11 @@ test.describe("search", () => {
   });
 
   test("filters icons by phrase", async ({ page }) => {
+    const iconSetToggleButton = page.getByRole("button", {
+      name: /Show Lucide icon set/,
+    });
+    await iconSetToggleButton.click();
+
     const iconButtons = page.getByRole("button", { name: /(Insert icon:).*/ });
     await iconButtons.first().waitFor({ state: "visible" });
 

@@ -1,9 +1,5 @@
 import { test, expect } from "@playwright/test";
-
-type PluginUIEvent = {
-  type: string;
-  content: Record<string, unknown>;
-};
+import { setUpEventLogging } from "./utils/events";
 
 const testIcon = {
   name: "pickaxe",
@@ -13,26 +9,22 @@ const testIcon = {
 
 test.describe("icon", () => {
   test("inserts an icon into a project", async ({ page }) => {
-    const eventLog: PluginUIEvent[] = [];
-
-    await page.exposeFunction("logEvent", (data: PluginUIEvent) =>
-      eventLog.push(data),
-    );
-    await page.addInitScript(() => {
-      // @ts-expect-error - TS doesn't know about logCall method.
-      const mockPostMessage = (data: PluginUIEvent) => logEvent(data);
-      window.parent.postMessage = mockPostMessage;
-    });
+    const eventLog = await setUpEventLogging(page);
 
     await page.goto("/");
+
+    const iconSetToggleButton = page.getByRole("button", {
+      name: /Show Lucide icon set/,
+    });
+    await iconSetToggleButton.click();
 
     const iconButton = page.getByRole("button", {
       name: `Insert icon: ${testIcon.name}`,
     });
     await iconButton.click();
 
-    expect(eventLog.length).toEqual(1);
-    expect(eventLog[0]).toEqual({
+    const event = eventLog.find(({ type }) => type === "insert-icon");
+    expect(event).toEqual({
       type: "insert-icon",
       content: testIcon,
     });

@@ -3,5 +3,5 @@
   "description": "Quickly access a range of icon libraries",
   "code": "/plugin.js",
   "icon": "/icon.png",
-  "permissions": ["content:write"]
+  "permissions": ["content:read", "content:write"]
 }

@@ -1,13 +1,21 @@
 import { PenpotTheme } from "@penpot/plugin-types";
 
-export type PluginMessageEvent = ThemePluginEvent;
+export type PluginMessageEvent = ThemePluginEvent | DataPluginEvent;
 
 type ThemePluginEvent = {
   type: "theme";
   content: PenpotTheme;
 };
 
-type PluginUIEvent = InsertIconPluginEvent;
+type DataPluginEvent = {
+  type: "plugin-data";
+  content: PluginData;
+};
+
+type PluginUIEvent =
+  | InsertIconPluginEvent
+  | SetDataPluginEvent
+  | GetDataPluginEvent;
 
 type InsertIconPluginEvent = {
   type: "insert-icon";
@@ -16,6 +24,21 @@ type InsertIconPluginEvent = {
     svg: string;
     size: number;
   };
+};
+
+type SetDataPluginEvent = {
+  type: "set-plugin-data";
+  content: PluginData;
+};
+
+type GetDataPluginEvent = {
+  type: "get-plugin-data";
+  content: Pick<PluginData, "scope">;
+};
+
+type PluginData = {
+  scope: string;
+  data: unknown;
 };
 
 penpot.ui.open("All Icons", `?theme=${penpot.getTheme()}`, {
@@ -35,6 +58,14 @@ penpot.ui.onMessage<PluginUIEvent>(({ type, content }) => {
   if (type === "insert-icon") {
     insertIcon(content);
   }
+
+  if (type === "set-plugin-data") {
+    setPluginData(content.scope, content.data);
+  }
+
+  if (type === "get-plugin-data") {
+    getPluginData(content.scope);
+  }
 });
 
 function insertIcon({
@@ -53,4 +84,20 @@ function insertIcon({
     icon.y = penpot.viewport.center.y;
     icon.resize(size, size);
   }
+}
+
+function setPluginData(key: string, data: unknown) {
+  penpot.currentPage.setPluginData(key, JSON.stringify(data));
+}
+
+function getPluginData(key: string) {
+  const data = penpot.currentPage.getPluginData(key);
+  if (!data || data === "null" || data === "") {
+    return;
+  }
+
+  sendMessage({
+    type: "plugin-data",
+    content: { scope: key, data: JSON.parse(data) },
+  });
 }

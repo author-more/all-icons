@@ -15,6 +15,12 @@ All Icons is a Penpot plugin that allows you to easily access icons from various
 3. Fill the plugin URL input with `https://allicons.authormore.com/manifest.json`.
 4. Click the "Install" button.
 5. Follow the instructions on the screen.
+
+   The installer will inform you about the permissions requested by the plugin:
+
+   - Content's write access is necessary for the icon insertion.
+   - Content's read access is necessary to save and retrieve the plugin's settings e.g. open icon sets, selected style variants.
+
 6. Use the plugin manager to open the plugin.
 
 ## Development

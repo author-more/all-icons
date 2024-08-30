@@ -144,12 +144,16 @@ function App() {
                   <ChevronRight size={12} />
                 )}
               </IconButton>
-              <h1 className="title-m">{name}</h1>
-              <LinkTag href={website}>Website</LinkTag>
-              <LinkTag href={license.url}>
-                License: {license.name}
-                <sup>*</sup>
-              </LinkTag>
+              <div>
+                <h1 className="title-s">{name}</h1>
+                <ControlsBar>
+                  <LinkTag href={website}>Website</LinkTag>
+                  <LinkTag href={license.url}>
+                    License: {license.name}
+                    <sup>*</sup>
+                  </LinkTag>
+                </ControlsBar>
+              </div>
             </ControlsBar>
             {shouldShowIcons && hasMultipleVariants && (
               <Select

@@ -1,4 +1,7 @@
 .link-tag {
+  display: flex;
+  align-items: center;
+
   border-radius: var(--spacing-4);
 
   padding: 0.1rem var(--spacing-8);

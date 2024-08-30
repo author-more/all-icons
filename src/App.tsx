@@ -88,7 +88,12 @@ function App() {
     };
   }, [iconSetsSettings]);
 
-  function generateIconList(icons: (typeof iconSets)[number]["icons"]) {
+  function generateIconList(
+    icons: (typeof iconSets)[number]["icons"],
+    {
+      iconSettings: { svg: { attributes: customSvgAttributes = "" } = {} } = {},
+    }: Pick<(typeof iconSets)[number], "iconSettings">,
+  ) {
     return Object.entries(icons)
       .filter(([name]) => {
         return name.toLowerCase().includes(searchPhrase.toLowerCase());
@@ -101,7 +106,12 @@ function App() {
           },
         ]) => {
           const svg = `<svg ${attributes}>${elements}</svg>`;
-          const icon = <Icon attributes={attributes} elements={elements} />;
+          const icon = (
+            <Icon
+              attributes={`${attributes} ${customSvgAttributes}`}
+              elements={elements}
+            />
+          );
 
           return (
             <IconButton
@@ -125,7 +135,7 @@ function App() {
   }
 
   const iconGrids = iconSets.map(
-    ({ id, name, website, license, variantOptions, icons }) => {
+    ({ id, name, website, license, variantOptions, icons, iconSettings }) => {
       const hasMultipleVariants = variantOptions.length > 1;
       const { showIcons: shouldShowIcons } = iconSetsSettings[id];
 
@@ -170,7 +180,9 @@ function App() {
           </ControlsBar>
           {shouldShowIcons && (
             <GridList
-              items={generateIconList(icons)}
+              items={generateIconList(icons, {
+                iconSettings,
+              })}
               emptyMessage={`No icons found for "${searchPhrase}" in ${name} library.`}
             />
           )}

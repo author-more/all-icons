@@ -12,6 +12,11 @@ type IconLibrary = {
     url: string;
   };
   icons: IconSetVariant[];
+  iconSettings?: {
+    svg?: {
+      attributes?: string;
+    };
+  };
   defaultSettings?: Partial<IconSetSettings>;
 };
 
@@ -89,6 +94,11 @@ export const iconLibraries: IconLibrary[] = [
       "sharp",
       "two-tone",
     ]),
+    iconSettings: {
+      svg: {
+        attributes: 'fill="currentColor"',
+      },
+    },
     defaultSettings: { selectedVariant: "outlined" },
   },
 ];

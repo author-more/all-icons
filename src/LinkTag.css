@@ -1,10 +1,17 @@
 .link-tag {
+  display: flex;
+  align-items: center;
+
   border-radius: var(--spacing-4);
 
-  padding: 0.1rem var(--spacing-8);
+  padding: var(--spacing-4);
 
   text-decoration: none;
   cursor: pointer;
+}
+
+.link-tag[class*="body-"] {
+  line-height: 1;
 }
 
 [data-theme="dark"] .link-tag {

@@ -3,16 +3,16 @@ import "./ControlsBar.css";
 
 type ControlsBar = {
   children: ReactNode;
-  stickToTop?: boolean;
+  stickTo?: "top" | "bottom";
   growFirstItem?: boolean;
 };
 
 export default function ControlsBar({
   children,
-  stickToTop,
+  stickTo,
   growFirstItem,
 }: ControlsBar) {
-  const className = `controls-bar ${stickToTop ? "sticky" : ""} ${growFirstItem ? "grow-first" : ""}`;
+  const className = `controls-bar ${stickTo && `sticky ${stickTo}`} ${growFirstItem ? "grow-first" : ""}`;
 
   return <div className={className}>{children}</div>;
 }

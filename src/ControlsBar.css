@@ -3,6 +3,7 @@
   align-items: center;
   gap: 0.5rem;
 
+  min-height: 30px;
   padding: var(--spacing-4) 0;
 }
 
@@ -10,9 +11,16 @@
   flex-grow: 1;
 }
 
-.controls-bar.sticky {
+.controls-bar.sticky.top {
   position: sticky;
   top: 0;
+}
+
+.controls-bar.sticky.bottom {
+  position: fixed;
+  bottom: 0;
+
+  width: 100%;
 }
 
 [data-theme="dark"] .controls-bar {

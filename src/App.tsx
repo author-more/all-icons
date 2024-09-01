@@ -33,6 +33,14 @@ function App() {
     defaultIconSetSettings,
   );
 
+  const [hoveredIcon, setHoveredIcon] = useState<{
+    name: string;
+    library: {
+      name: string;
+      variant: string;
+    };
+  } | null>(null);
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent<PluginMessageEvent>) => {
       if (event.data.type === "theme") {
@@ -92,8 +100,13 @@ function App() {
     icons: (typeof iconSets)[number]["icons"],
     {
       iconSettings: { svg: { attributes: customSvgAttributes = "" } = {} } = {},
-    }: Pick<(typeof iconSets)[number], "iconSettings">,
+      metadata,
+    }: Pick<(typeof iconSets)[number], "iconSettings"> & {
+      metadata: { library: { name: string; variant: string } };
+    },
   ) {
+    const { library } = metadata;
+
     return Object.entries(icons)
       .filter(([name]) => {
         return name.toLowerCase().includes(searchPhrase.toLowerCase());
@@ -118,6 +131,8 @@ function App() {
               key={`icon-${name}`}
               label={`Insert icon: ${name}`}
               onClick={() => handleIconButtonClick(name, svg)}
+              onMouseEnter={() => setHoveredIcon({ name, library })}
+              onMouseLeave={() => setHoveredIcon(null)}
             >
               {icon}
             </IconButton>
@@ -182,6 +197,12 @@ function App() {
             <GridList
               items={generateIconList(icons, {
                 iconSettings,
+                metadata: {
+                  library: {
+                    name,
+                    variant: iconSetsSettings[id].selectedVariant,
+                  },
+                },
               })}
               emptyMessage={`No icons found for "${searchPhrase}" in ${name} library.`}
             />
@@ -190,6 +211,14 @@ function App() {
       );
     },
   );
+
+  const metaBreadcrumbs = [
+    hoveredIcon?.library.name,
+    hoveredIcon?.library.variant,
+    hoveredIcon?.name,
+  ]
+    .filter(Boolean)
+    .join(" > ");
 
   function updateSettings(
     id: string,
@@ -208,12 +237,15 @@ function App() {
 
   return (
     <div className="app" data-theme={theme}>
-      <ControlsBar stickToTop={true} growFirstItem={true}>
+      <ControlsBar stickTo={"top"} growFirstItem={true}>
         <SearchInput
           label="Search icon"
           placeholder="e.g. arrow"
           onChange={setSearchPhrase}
         />
+      </ControlsBar>
+      <ControlsBar stickTo={"bottom"}>
+        <p className="body-s">{metaBreadcrumbs || ""}</p>
       </ControlsBar>
       {iconGrids}
       <p className="caption">

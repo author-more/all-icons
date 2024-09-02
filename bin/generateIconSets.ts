@@ -8,31 +8,44 @@ type Icon = {
   };
 };
 
-iconPackages.forEach(({ id, iconsDir }: (typeof iconPackages)[number]) => {
-  const files = getFilesByExtension(iconsDir, ".svg");
+iconPackages.forEach(
+  ({
+    id,
+    iconsDir,
+    variant,
+    getVariantFromIconName,
+  }: (typeof iconPackages)[number]) => {
+    const files = getFilesByExtension(iconsDir, ".svg");
 
-  const icons: Record<string, Icon> = {};
-  for (const file of files) {
-    const svg = readFile(iconsDir, file);
+    const icons: Record<string, Record<string, Icon>> = {};
+    for (const file of files) {
+      const svg = readFile(iconsDir, file);
 
-    const attributes = svg.match(/<svg([^>]*)>/)?.[1];
-    const elements = svg.match(/<svg[^>]*>([\s\S]*)<\/svg>/)?.[1];
+      const attributes = svg.match(/<svg([^>]*)>/)?.[1];
+      const elements = svg.match(/<svg[^>]*>([\s\S]*)<\/svg>/)?.[1];
 
-    if (!attributes || !elements) {
-      throw new Error(`Failed to parse the SVG: ${file}`);
+      if (!attributes || !elements) {
+        throw new Error(`Failed to parse the SVG: ${file}`);
+      }
+
+      const iconName = file.replace(".svg", "");
+      const variantName =
+        variant ?? getVariantFromIconName?.(iconName) ?? "regular";
+
+      icons[variantName] = icons[variantName] || {};
+      icons[variantName][iconName] = {
+        svg: {
+          attributes: normaliseWhitespace(attributes),
+          elements: normaliseWhitespace(elements),
+        },
+      };
     }
 
-    const iconName = file.replace(".svg", "");
-    icons[iconName] = {
-      svg: {
-        attributes: normaliseWhitespace(attributes),
-        elements: normaliseWhitespace(elements),
-      },
-    };
-  }
-
-  writeToJSONFile("../data/icons", id, icons);
-});
+    for (const [variantName, iconSet] of Object.entries(icons)) {
+      writeToJSONFile("../data/icons", `${id}-${variantName}`, iconSet);
+    }
+  },
+);
 
 function normaliseWhitespace(text: string): string {
   return text

@@ -101,6 +101,16 @@ export const iconLibraries: IconLibrary[] = [
     },
     defaultSettings: { selectedVariant: "outlined" },
   },
+  {
+    id: "bootstrap",
+    name: "Bootstrap",
+    website: "https://icons.getbootstrap.com/",
+    license: {
+      name: "MIT",
+      url: "https://github.com/twbs/icons/blob/main/LICENSE",
+    },
+    icons: generateVariants("bootstrap", ["regular", "fill"]),
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =

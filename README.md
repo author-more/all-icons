@@ -35,7 +35,7 @@ You need to have an environment with Node.js installed to work on the plugin.
 6. Add a new plugin with the URL `http://localhost:4173/manifest.json`.
 7. Use the plugin manager to open the plugin.
 
-Currently the development setup is using the production build in watch mode. This means hot module replacement is not available and you need to reload the plugin manually after making changes.
+Currently the development setup is using the production build in watch mode for the plugin script. This means development tools like source maps, hot module replacement are not available, and you need to reload the plugin manually after making changes in the script. The app part is running a development server.
 
 ## Credits
 

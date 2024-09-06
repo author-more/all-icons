@@ -131,6 +131,16 @@ export const iconLibraries: IconLibrary[] = [
     },
     icons: generateVariants("remixicon", ["regular", "fill"]),
   },
+  {
+    id: "feather",
+    name: "Feather",
+    website: "https://feathericons.com/",
+    license: {
+      name: "MIT",
+      url: "https://github.com/feathericons/feather/blob/main/LICENSE",
+    },
+    icons: generateVariants("feather", ["regular"]),
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =

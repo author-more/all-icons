@@ -45,4 +45,9 @@ export const iconPackages = [
     },
     iconsDir: "../node_modules/remixicon/icons",
   },
+  {
+    id: "feather",
+    variant: "regular",
+    iconsDir: "../node_modules/feather-icons/dist/icons",
+  },
 ];

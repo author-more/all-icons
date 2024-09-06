@@ -37,4 +37,12 @@ export const iconPackages = [
     variant,
     iconsDir: `../node_modules/heroicons/${path}`,
   })),
+  {
+    id: "remixicon",
+    getVariantFromIconName: (iconName: string) => {
+      if (iconName.endsWith("fill")) return "fill";
+      return "regular";
+    },
+    iconsDir: "../node_modules/remixicon/icons",
+  },
 ];

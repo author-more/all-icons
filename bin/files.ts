@@ -5,7 +5,7 @@ export const __dirname = import.meta.dirname;
 
 export function getFilesByExtension(directory: string, extension: string) {
   const path = resolve(__dirname, directory);
-  const files = readdirSync(path);
+  const files = readdirSync(path, { encoding: "utf8", recursive: true });
 
   return files.filter((file) => extname(file) === extension);
 }

@@ -121,6 +121,16 @@ export const iconLibraries: IconLibrary[] = [
     },
     icons: generateVariants("heroicons", ["outline", "solid", "mini", "micro"]),
   },
+  {
+    id: "remixicon",
+    name: "Remix Icon",
+    website: "https://remixicon.com/",
+    license: {
+      name: "Apache-2.0",
+      url: "https://github.com/Remix-Design/remixicon/blob/master/License",
+    },
+    icons: generateVariants("remixicon", ["regular", "fill"]),
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =

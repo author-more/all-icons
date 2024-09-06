@@ -68,11 +68,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    sendMessage("set-plugin-data", {
-      scope: DATA_KEY_ICON_SETS_SETTINGS,
-      data: iconSetsSettings,
-    });
-
     const [result, controller] = getIconSetsByVariant(
       iconLibraries,
       iconSetsSettings,
@@ -226,13 +221,19 @@ function App() {
       (typeof defaultIconSetSettings)[keyof typeof defaultIconSetSettings]
     >,
   ) {
-    setIconSetsSettings((currentSettings) => ({
-      ...currentSettings,
+    const settingsUpdated = {
+      ...iconSetsSettings,
       [id]: {
-        ...currentSettings[id],
+        ...iconSetsSettings[id],
         ...settings,
       },
-    }));
+    };
+
+    setIconSetsSettings(settingsUpdated);
+    sendMessage("set-plugin-data", {
+      scope: DATA_KEY_ICON_SETS_SETTINGS,
+      data: settingsUpdated,
+    });
   }
 
   return (

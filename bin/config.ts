@@ -27,4 +27,27 @@ export const iconPackages = [
     },
     iconsDir: "../node_modules/bootstrap-icons/icons",
   },
+  ...[
+    ["outline", "24/outline"],
+    ["solid", "24/solid"],
+    ["mini", "20/solid"],
+    ["micro", "16/solid"],
+  ].map(([variant, path]) => ({
+    id: `heroicons`,
+    variant,
+    iconsDir: `../node_modules/heroicons/${path}`,
+  })),
+  {
+    id: "remixicon",
+    getVariantFromIconName: (iconName: string) => {
+      if (iconName.endsWith("fill")) return "fill";
+      return "regular";
+    },
+    iconsDir: "../node_modules/remixicon/icons",
+  },
+  {
+    id: "feather",
+    variant: "regular",
+    iconsDir: "../node_modules/feather-icons/dist/icons",
+  },
 ];

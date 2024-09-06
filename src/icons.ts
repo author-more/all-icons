@@ -111,6 +111,36 @@ export const iconLibraries: IconLibrary[] = [
     },
     icons: generateVariants("bootstrap", ["regular", "fill"]),
   },
+  {
+    id: "heroicons",
+    name: "Heroicons",
+    website: "https://heroicons.com",
+    license: {
+      name: "MIT",
+      url: "https://github.com/tailwindlabs/heroicons/blob/master/LICENSE",
+    },
+    icons: generateVariants("heroicons", ["outline", "solid", "mini", "micro"]),
+  },
+  {
+    id: "remixicon",
+    name: "Remix Icon",
+    website: "https://remixicon.com/",
+    license: {
+      name: "Apache-2.0",
+      url: "https://github.com/Remix-Design/remixicon/blob/master/License",
+    },
+    icons: generateVariants("remixicon", ["regular", "fill"]),
+  },
+  {
+    id: "feather",
+    name: "Feather",
+    website: "https://feathericons.com/",
+    license: {
+      name: "MIT",
+      url: "https://github.com/feathericons/feather/blob/main/LICENSE",
+    },
+    icons: generateVariants("feather", ["regular"]),
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =

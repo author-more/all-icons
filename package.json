@@ -17,11 +17,14 @@
     "@penpot/plugin-styles": "^0.10.0",
     "@phosphor-icons/core": "^2.1.1",
     "bootstrap-icons": "^1.11.3",
+    "feather-icons": "^4.29.2",
+    "heroicons": "^2.1.5",
     "iconoir": "^7.8.0",
     "lucide-react": "^0.427.0",
     "lucide-static": "^0.427.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "remixicon": "^4.3.0"
   },
   "devDependencies": {
     "@penpot/plugin-types": "^0.10.0",

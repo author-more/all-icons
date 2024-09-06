@@ -28,7 +28,7 @@ iconPackages.forEach(
         throw new Error(`Failed to parse the SVG: ${file}`);
       }
 
-      const iconName = file.replace(".svg", "");
+      const iconName = file.split("/").pop()!.replace(".svg", "");
       const variantName =
         variant ?? getVariantFromIconName?.(iconName) ?? "regular";
 

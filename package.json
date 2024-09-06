@@ -17,6 +17,7 @@
     "@penpot/plugin-styles": "^0.10.0",
     "@phosphor-icons/core": "^2.1.1",
     "bootstrap-icons": "^1.11.3",
+    "heroicons": "^2.1.5",
     "iconoir": "^7.8.0",
     "lucide-react": "^0.427.0",
     "lucide-static": "^0.427.0",

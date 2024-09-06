@@ -111,6 +111,16 @@ export const iconLibraries: IconLibrary[] = [
     },
     icons: generateVariants("bootstrap", ["regular", "fill"]),
   },
+  {
+    id: "heroicons",
+    name: "Heroicons",
+    website: "https://heroicons.com",
+    license: {
+      name: "MIT",
+      url: "https://github.com/tailwindlabs/heroicons/blob/master/LICENSE",
+    },
+    icons: generateVariants("heroicons", ["outline", "solid", "mini", "micro"]),
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =

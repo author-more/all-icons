@@ -13,7 +13,7 @@ test.describe("settings", () => {
     await iconSetToggleButton.click();
 
     const event = eventLog.filter(({ type }) => type === "set-plugin-data");
-    expect(event[1]).toMatchObject({
+    expect(event[0]).toMatchObject({
       type: "set-plugin-data",
       content: {
         scope: "iconSetsSettings",
@@ -41,7 +41,7 @@ test.describe("settings", () => {
     await changeStyleSelect.selectOption({ label: "solid" });
 
     const event = eventLog.filter(({ type }) => type === "set-plugin-data");
-    expect(event[2]).toMatchObject({
+    expect(event[1]).toMatchObject({
       type: "set-plugin-data",
       content: {
         scope: "iconSetsSettings",

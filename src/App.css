@@ -5,3 +5,18 @@
 
   padding-bottom: 30px;
 }
+
+.icon-menu {
+  display: flex;
+  gap: 0.5rem;
+
+  padding: 0 0.5rem;
+}
+
+[data-theme="dark"] .icon-menu a {
+  color: var(--df-secondary);
+}
+
+[data-theme="light"] .icon-menu a {
+  color: var(--lf-secondary);
+}

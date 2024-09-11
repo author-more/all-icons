@@ -16,7 +16,7 @@ import {
 import Select from "./Select";
 import LinkTag from "./LinkTag";
 import { toSortedBy } from "./sort";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { Bug, ChevronDown, ChevronRight, Lightbulb } from "lucide-react";
 import { sendMessage } from "./window";
 
 function App() {
@@ -245,8 +245,28 @@ function App() {
           onChange={setSearchPhrase}
         />
       </ControlsBar>
-      <ControlsBar stickTo={"bottom"}>
+      <ControlsBar stickTo={"bottom"} growFirstItem={true}>
         <p className="body-s">{metaBreadcrumbs || ""}</p>
+        <div className="icon-menu">
+          <a
+            href="https://github.com/author-more/all-icons/issues"
+            title="Report an issue"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Bug aria-hidden="true" size={16} />{" "}
+            <span className="visually-hidden">Report an issue</span>
+          </a>
+          <a
+            href="https://github.com/author-more/all-icons/discussions"
+            title="Suggest a feature"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Lightbulb aria-hidden="true" size={16} />{" "}
+            <span className="visually-hidden">Suggest a feature</span>
+          </a>
+        </div>
       </ControlsBar>
       {iconGrids}
       <p className="caption">

@@ -40,4 +40,22 @@ test.describe("app", () => {
     const iconButtons = page.getByRole("button", { name: /(Insert icon:).*/ });
     expect(await iconButtons.count()).toBeGreaterThan(1);
   });
+
+  test("has links to report issues and suggest features", async ({ page }) => {
+    const reportIssueLink = page.getByRole("link", { name: /Report an issue/ });
+    await expect(reportIssueLink).toBeInViewport();
+    await expect(reportIssueLink).toHaveAttribute(
+      "href",
+      "https://github.com/author-more/all-icons/issues",
+    );
+
+    const suggestFeatureLink = page.getByRole("link", {
+      name: /Suggest a feature/,
+    });
+    await expect(suggestFeatureLink).toBeInViewport();
+    await expect(suggestFeatureLink).toHaveAttribute(
+      "href",
+      "https://github.com/author-more/all-icons/discussions",
+    );
+  });
 });

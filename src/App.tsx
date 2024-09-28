@@ -18,6 +18,7 @@ import LinkTag from "./LinkTag";
 import { toSortedBy } from "./sort";
 import { Bug, ChevronDown, ChevronRight, Lightbulb } from "lucide-react";
 import { sendMessage } from "./window";
+import { filterByPhrase } from "./search";
 
 function App() {
   const url = new URL(window.location.href);
@@ -103,9 +104,7 @@ function App() {
     const { library } = metadata;
 
     return Object.entries(icons)
-      .filter(([name]) => {
-        return name.toLowerCase().includes(searchPhrase.toLowerCase());
-      })
+      .filter(([name]) => filterByPhrase(searchPhrase, name))
       .map(
         ([
           name,

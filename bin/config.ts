@@ -50,4 +50,9 @@ export const iconPackages = [
     variant: "regular",
     iconsDir: "../node_modules/feather-icons/dist/icons",
   },
+  ...["free", "flag"].map((variant) => ({
+    id: `core-ui`,
+    variant,
+    iconsDir: `../node_modules/@coreui/icons/svg/${variant}`,
+  })),
 ];

@@ -141,6 +141,17 @@ export const iconLibraries: IconLibrary[] = [
     },
     icons: generateVariants("feather", ["regular"]),
   },
+  {
+    id: "core-ui",
+    name: "CoreUI Free",
+    website: "https://coreui.io/icons/",
+    license: {
+      name: "CC BY 4.0, CC0 1.0 Universal",
+      url: "https://github.com/coreui/coreui-icons/blob/main/LICENSE",
+    },
+    icons: generateVariants("core-ui", ["free", "flag"]),
+    defaultSettings: { selectedVariant: "free" },
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =

@@ -1,4 +1,5 @@
 import { parseAttributes } from "./dataStructure";
+import "./Icon.css";
 
 type IconProps = {
   attributes: string;

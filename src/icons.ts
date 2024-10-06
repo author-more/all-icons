@@ -218,3 +218,15 @@ export function getVariantOptions(icons: IconSetVariant[]) {
     value: variant,
   }));
 }
+
+export function getNormalisedIconSize(
+  originalWidth: number,
+  originalHeight: number,
+) {
+  const ratio =
+    originalWidth && originalHeight ? originalWidth / originalHeight : 1;
+  const width = DEFAULT_ICON_SIZE;
+  const height = Math.round(width / ratio);
+
+  return { width, height };
+}

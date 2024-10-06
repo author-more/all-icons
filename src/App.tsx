@@ -10,8 +10,8 @@ import {
   iconLibraries,
   defaultIconSetSettings,
   getIconSetsByVariant,
-  DEFAULT_ICON_SIZE,
   DATA_KEY_ICON_SETS_SETTINGS,
+  getNormalisedIconSize,
 } from "./icons";
 import Select from "./Select";
 import LinkTag from "./LinkTag";
@@ -19,6 +19,7 @@ import { toSortedBy } from "./sort";
 import { Bug, ChevronDown, ChevronRight, Lightbulb } from "lucide-react";
 import { sendMessage } from "./window";
 import { filterByPhrase } from "./search";
+import { parseAttributes } from "./dataStructure";
 
 function App() {
   const url = new URL(window.location.href);
@@ -112,19 +113,23 @@ function App() {
             svg: { attributes, elements },
           },
         ]) => {
+          const parsedAttributes =
+            parseAttributes(`${attributes} ${customSvgAttributes}`) || {};
+
           const svg = `<svg ${attributes}>${elements}</svg>`;
           const icon = (
-            <Icon
-              attributes={`${attributes} ${customSvgAttributes}`}
-              elements={elements}
-            />
+            <Icon attributes={parsedAttributes} elements={elements} />
+          );
+          const size = getNormalisedIconSize(
+            parseInt(parsedAttributes.width, 10),
+            parseInt(parsedAttributes.height, 10),
           );
 
           return (
             <IconButton
               key={`icon-${name}`}
               label={`Insert icon: ${name}`}
-              onClick={() => handleIconButtonClick(name, svg)}
+              onClick={() => handleIconButtonClick(name, svg, size)}
               onMouseEnter={() => setHoveredIcon({ name, library })}
               onMouseLeave={() => setHoveredIcon(null)}
             >
@@ -135,8 +140,12 @@ function App() {
       );
   }
 
-  function handleIconButtonClick(name: string, svg: string) {
-    sendMessage("insert-icon", { name, svg, size: DEFAULT_ICON_SIZE });
+  function handleIconButtonClick(
+    name: string,
+    svg: string,
+    size: { width: number; height: number },
+  ) {
+    sendMessage("insert-icon", { name, svg, size });
   }
 
   function toggleShowIcons(id: string) {

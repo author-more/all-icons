@@ -22,9 +22,11 @@ type InsertIconPluginEvent = {
   content: {
     name: string;
     svg: string;
-    size: number;
+    size: IconSize;
   };
 };
+
+type IconSize = { width: number; height: number };
 
 type SetDataPluginEvent = {
   type: "set-plugin-data";
@@ -71,18 +73,18 @@ penpot.ui.onMessage<PluginUIEvent>(({ type, content }) => {
 function insertIcon({
   name,
   svg,
-  size,
+  size: { width, height },
 }: {
   name: string;
   svg: string;
-  size: number;
+  size: IconSize;
 }) {
   const icon = penpot.createShapeFromSvg(svg);
   if (icon) {
     icon.name = name;
     icon.x = penpot.viewport.center.x;
     icon.y = penpot.viewport.center.y;
-    icon.resize(size, size);
+    icon.resize(width, height);
   }
 }
 

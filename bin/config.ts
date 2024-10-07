@@ -1,4 +1,12 @@
-export const iconPackages = [
+type IconPackage = {
+  id: string;
+  variant?: string;
+  iconsDir: string;
+  getVariantFromIconName?: (iconName: string) => string;
+  normaliseAttributes?: (svg: string) => string;
+};
+
+export const iconPackages: IconPackage[] = [
   {
     id: "lucide",
     variant: "regular",
@@ -50,4 +58,11 @@ export const iconPackages = [
     variant: "regular",
     iconsDir: "../node_modules/feather-icons/dist/icons",
   },
+  ...["free", "flag"].map((variant) => ({
+    id: `core-ui`,
+    variant,
+    iconsDir: `../node_modules/@coreui/icons/svg/${variant}`,
+    normaliseAttributes: (svg: string) =>
+      svg.replace(/fill="var\(--ci-primary-color, currentColor\)"/g, ""),
+  })),
 ];

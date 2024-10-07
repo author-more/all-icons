@@ -141,6 +141,22 @@ export const iconLibraries: IconLibrary[] = [
     },
     icons: generateVariants("feather", ["regular"]),
   },
+  {
+    id: "core-ui",
+    name: "CoreUI Free",
+    website: "https://coreui.io/icons/",
+    license: {
+      name: "CC BY 4.0, CC0 1.0 Universal",
+      url: "https://github.com/coreui/coreui-icons/blob/main/LICENSE",
+    },
+    icons: generateVariants("core-ui", ["free", "flag"]),
+    iconSettings: {
+      svg: {
+        attributes: 'fill="currentColor"',
+      },
+    },
+    defaultSettings: { selectedVariant: "free" },
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =
@@ -206,4 +222,16 @@ export function getVariantOptions(icons: IconSetVariant[]) {
     label: variant,
     value: variant,
   }));
+}
+
+export function getNormalisedIconSize(
+  originalWidth: number,
+  originalHeight: number,
+) {
+  const ratio =
+    originalWidth && originalHeight ? originalWidth / originalHeight : 1;
+  const width = DEFAULT_ICON_SIZE;
+  const height = Math.round(width / ratio);
+
+  return { width, height };
 }

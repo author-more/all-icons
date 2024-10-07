@@ -13,6 +13,7 @@
     "generate-data": "tsx ./bin/generateIconSets.ts"
   },
   "dependencies": {
+    "@coreui/icons": "^3.0.1",
     "@material-design-icons/svg": "^0.14.13",
     "@penpot/plugin-styles": "^0.10.0",
     "@phosphor-icons/core": "^2.1.1",

@@ -1,12 +1,12 @@
-import { parseAttributes } from "./dataStructure";
+import "./Icon.css";
 
 type IconProps = {
-  attributes: string;
+  attributes: Record<string, string>;
   elements: string;
 };
 
 export default function Icon({ attributes, elements }: IconProps) {
-  const { class: className, ...rest } = parseAttributes(attributes) || {};
+  const { class: className, ...rest } = attributes || {};
 
   return (
     <svg

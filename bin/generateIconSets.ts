@@ -14,6 +14,7 @@ iconPackages.forEach(
     iconsDir,
     variant,
     getVariantFromIconName,
+    normaliseAttributes,
   }: (typeof iconPackages)[number]) => {
     const files = getFilesByExtension(iconsDir, ".svg");
 
@@ -21,8 +22,9 @@ iconPackages.forEach(
     for (const file of files) {
       const svg = readFile(iconsDir, file);
 
-      const attributes = svg.match(/<svg([^>]*)>/)?.[1];
-      const elements = svg.match(/<svg[^>]*>([\s\S]*)<\/svg>/)?.[1];
+      const svgNormalised = normaliseAttributes?.(svg) || svg;
+      const attributes = svgNormalised.match(/<svg([^>]*)>/)?.[1];
+      const elements = svgNormalised.match(/<svg[^>]*>([\s\S]*)<\/svg>/)?.[1];
 
       if (!attributes || !elements) {
         throw new Error(`Failed to parse the SVG: ${file}`);

@@ -150,6 +150,11 @@ export const iconLibraries: IconLibrary[] = [
       url: "https://github.com/coreui/coreui-icons/blob/main/LICENSE",
     },
     icons: generateVariants("core-ui", ["free", "flag"]),
+    iconSettings: {
+      svg: {
+        attributes: 'fill="currentColor"',
+      },
+    },
     defaultSettings: { selectedVariant: "free" },
   },
 ];

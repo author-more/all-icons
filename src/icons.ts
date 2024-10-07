@@ -157,6 +157,16 @@ export const iconLibraries: IconLibrary[] = [
     },
     defaultSettings: { selectedVariant: "free" },
   },
+  {
+    id: "tabler",
+    name: "Tabler Icons",
+    website: "https://tabler.io/icons",
+    license: {
+      name: "MIT",
+      url: "https://github.com/tabler/tabler-icons/blob/main/LICENSE",
+    },
+    icons: generateVariants("tabler", ["outline", "filled"]),
+  },
 ];
 
 export const defaultIconSetSettings: Record<string, IconSetSettings> =

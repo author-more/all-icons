@@ -17,6 +17,7 @@
     "@material-design-icons/svg": "^0.14.13",
     "@penpot/plugin-styles": "^0.10.0",
     "@phosphor-icons/core": "^2.1.1",
+    "@tabler/icons": "^3.19.0",
     "bootstrap-icons": "^1.11.3",
     "feather-icons": "^4.29.2",
     "heroicons": "^2.1.5",

@@ -65,4 +65,9 @@ export const iconPackages: IconPackage[] = [
     normaliseAttributes: (svg: string) =>
       svg.replace(/fill="var\(--ci-primary-color, currentColor\)"/g, ""),
   })),
+  ...["outline", "filled"].map((variant) => ({
+    id: `tabler`,
+    variant,
+    iconsDir: `../node_modules/@tabler/icons/icons/${variant}`,
+  })),
 ];

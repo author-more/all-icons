@@ -1,10 +1,10 @@
-import { PenpotTheme } from "@penpot/plugin-types";
+import { Theme } from "@penpot/plugin-types";
 
 export type PluginMessageEvent = ThemePluginEvent | DataPluginEvent;
 
 type ThemePluginEvent = {
   type: "theme";
-  content: PenpotTheme;
+  content: Theme;
 };
 
 type DataPluginEvent = {
@@ -43,7 +43,7 @@ type PluginData = {
   data: unknown;
 };
 
-penpot.ui.open("All Icons", `?theme=${penpot.getTheme()}`, {
+penpot.ui.open("All Icons", `?theme=${penpot.theme}`, {
   width: 500,
   height: 600,
 });
@@ -89,11 +89,11 @@ function insertIcon({
 }
 
 function setPluginData(key: string, data: unknown) {
-  penpot.currentPage.setPluginData(key, JSON.stringify(data));
+  penpot.currentPage?.setPluginData(key, JSON.stringify(data));
 }
 
 function getPluginData(key: string) {
-  const data = penpot.currentPage.getPluginData(key);
+  const data = penpot.currentPage?.getPluginData(key);
   if (!data || data === "null" || data === "") {
     return;
   }

@@ -8,20 +8,31 @@ All Icons is a Penpot plugin that allows you to easily access icons from various
 
 ## Installation
 
-> Penpot Plugins system is currently in development and not yet available in the live Penpot release.
+### Penpot App
 
-1. Go to a Penpot project.
-2. Open the plugin manager.
-3. Fill the plugin URL input with `https://allicons.authormore.com/manifest.json`.
-4. Click the "Install" button.
-5. Follow the instructions on the screen.
-
+1. Sign in to Penpot (the official SaaS version).
+1. Trigger the installation of the plugin by following the link below:  
+   [Install All Icons plugin](https://design.penpot.app/#?plugin=https://allicons.authormore.com/manifest.json)
+1. Follow the instructions on the screen.
    The installer will inform you about the permissions requested by the plugin:
-
    - Content's write access is necessary for the icon insertion.
    - Content's read access is necessary to save and retrieve the plugin's settings e.g. open icon sets, selected style variants.
+1. Go to a Penpot project.
+1. Open the plugin through the plugin manager.
 
-6. Use the plugin manager to open the plugin.
+> **Note**: If you manage a self-hosted Penpot instance, you can create an All Icons installation link by using the following pattern `<penpot-instance-origin>/#?plugin=https://allicons.authormore.com/manifest.json` where `<penpot-instance-origin>` is the URL of your Penpot instance.
+
+### Manual
+
+1. Go to a Penpot project.
+1. Open the plugin manager.
+1. Fill the plugin URL input with `https://allicons.authormore.com/manifest.json`.
+1. Click the "Install" button.
+1. Follow the instructions on the screen.
+   The installer will inform you about the permissions requested by the plugin:
+   - Content's write access is necessary for the icon insertion.
+   - Content's read access is necessary to save and retrieve the plugin's settings e.g. open icon sets, selected style variants.
+1. Use the plugin manager to open the plugin.
 
 ## Development
 

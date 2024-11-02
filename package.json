@@ -15,7 +15,7 @@
   "dependencies": {
     "@coreui/icons": "^3.0.1",
     "@material-design-icons/svg": "^0.14.13",
-    "@penpot/plugin-styles": "^0.12.0",
+    "@penpot/plugin-styles": "^1.0.0",
     "@phosphor-icons/core": "^2.1.1",
     "@tabler/icons": "^3.19.0",
     "bootstrap-icons": "^1.11.3",
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
-    "@penpot/plugin-types": "^0.12.0",
+    "@penpot/plugin-types": "^1.0.0",
     "@playwright/test": "^1.47.2",
     "@types/node": "^22.7.2",
     "@types/react": "^18.3.9",

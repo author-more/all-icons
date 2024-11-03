@@ -12,6 +12,7 @@ import {
   getIconSetsByVariant,
   DATA_KEY_ICON_SETS_SETTINGS,
   getNormalisedIconSize,
+  DEFAULT_ICON_SIZE,
 } from "./icons";
 import Select from "./Select";
 import LinkTag from "./LinkTag";
@@ -208,6 +209,7 @@ function App() {
                 },
               })}
               emptyMessage={`No icons found for "${searchPhrase}" in ${name} library.`}
+              itemSizePx={DEFAULT_ICON_SIZE + 16} // Minimum icon size + button's horizontal padding
             />
           )}
         </>

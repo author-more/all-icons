@@ -17,16 +17,16 @@
     "@material-design-icons/svg": "^0.14.13",
     "@penpot/plugin-styles": "^1.0.0",
     "@phosphor-icons/core": "^2.1.1",
-    "@tabler/icons": "^3.19.0",
+    "@tabler/icons": "^3.22.0",
     "bootstrap-icons": "^1.11.3",
     "feather-icons": "^4.29.2",
-    "heroicons": "^2.1.5",
-    "iconoir": "^7.9.0",
-    "lucide-react": "^0.446.0",
-    "lucide-static": "^0.446.0",
+    "heroicons": "^2.2.0",
+    "iconoir": "^7.10.0",
+    "lucide-react": "^0.460.0",
+    "lucide-static": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "remixicon": "^4.3.0"
+    "remixicon": "^4.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

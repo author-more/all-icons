@@ -12,7 +12,13 @@ export default function ControlsBar({
   stickTo,
   growFirstItem,
 }: ControlsBar) {
-  const className = `controls-bar ${stickTo && `sticky ${stickTo}`} ${growFirstItem ? "grow-first" : ""}`;
+  const className = [
+    "controls-bar",
+    (stickTo && `sticky ${stickTo}`) || "",
+    (growFirstItem && "grow-first") || "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return <div className={className}>{children}</div>;
 }
